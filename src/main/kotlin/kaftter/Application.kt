@@ -1,4 +1,4 @@
-package kafka.twitter
+package kaftter
 
 fun main() {
     println("Gathering twitter's data")
