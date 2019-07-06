@@ -13,8 +13,11 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
+    implementation("org.apache.kafka:kafka-clients:2.3.0")
+    implementation("org.slf4j:slf4j-api:1.7.2")
+    implementation("io.github.microutils:kotlin-logging:1.6.24")
 }
 
 tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = "11"
 }
