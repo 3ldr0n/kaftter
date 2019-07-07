@@ -20,10 +20,10 @@ import java.util.concurrent.TimeUnit
 
 class TwitterProducer {
 
-    private val consumerKey = ""
-    private val consumerSecret = ""
-    private val token = ""
-    private val secret = ""
+    private val consumerKey = System.getenv("TWITTER_CONSUMER_KEY")
+    private val consumerSecret = System.getenv("TWITTER_CONSUMER_SECRET")
+    private val token = System.getenv("TWITTER_TOKEN")
+    private val secret = System.getenv("TWITTER_SECRET")
 
     private val logger = KotlinLogging.logger {}
 
