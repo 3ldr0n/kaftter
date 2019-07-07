@@ -20,10 +20,10 @@ import java.util.concurrent.TimeUnit
 
 class TwitterProducer {
 
-    private val consumerKey = "c0XpzAWNjb1HfNVmWIrlx9P4V"
-    private val consumerSecret = "yOzFZgln6BMwvFyMRbfpIugKVX1SzokmRuuwCiXXyBtv1RQoLw"
-    private val token = "1147502274215862273-Krs4DgWNaivdaslglcgeO6WiYgPpXv"
-    private val secret = "JLz0vMqTwCQpcSNhseFJnBFLtQS9XBcaH4DmQSKBFKJTl"
+    private val consumerKey = ""
+    private val consumerSecret = ""
+    private val token = ""
+    private val secret = ""
 
     private val logger = KotlinLogging.logger {}
 
