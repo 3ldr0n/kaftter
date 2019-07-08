@@ -74,7 +74,7 @@ class TwitterProducer {
      *
      * @param client Twitter client
      */
-    fun shutdownHook(
+    private fun shutdownHook(
         client: Client,
         kafkaProducer: KafkaTwitterProducer
     ) {
