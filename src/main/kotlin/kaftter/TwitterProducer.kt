@@ -28,8 +28,7 @@ class TwitterProducer {
         client.connect()
 
         val kafkaProducer = KafkaTwitterProducer("localhost:9092")
-
-        kafkaProducer.shutdownHook(client)
+        shutdownHook(client, kafkaProducer)
 
         while (!client.isDone) {
             try {
@@ -45,6 +44,11 @@ class TwitterProducer {
         logger.info("End of Application execution.")
     }
 
+    /**
+     * Creates the client for the twitter api.
+     *
+     * @return The Twitter API client.
+     */
     private fun createTwitterClient(
         messageQueue: BlockingQueue<String>,
         terms: List<String>
@@ -63,6 +67,22 @@ class TwitterProducer {
             .endpoint(endpoint)
             .processor(StringDelimitedProcessor(messageQueue))
             .build()
+    }
+
+    /**
+     * Add a shutdown hook to the producer.
+     *
+     * @param client Twitter client
+     */
+    fun shutdownHook(
+        client: Client,
+        kafkaProducer: KafkaTwitterProducer
+    ) {
+        Runtime.getRuntime().addShutdownHook(Thread {
+            logger.info("Stopping application...")
+            client.stop()
+            kafkaProducer.producer.close()
+        })
     }
 
 }

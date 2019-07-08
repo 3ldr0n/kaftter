@@ -1,6 +1,5 @@
 package kaftter.kafka
 
-import com.twitter.hbc.core.Client
 import mu.KotlinLogging
 import org.apache.kafka.clients.producer.Callback
 import org.apache.kafka.clients.producer.KafkaProducer
@@ -14,7 +13,7 @@ class KafkaTwitterProducer(
 ) {
 
     private val logger = KotlinLogging.logger {}
-    private val producer: KafkaProducer<String, String>
+    val producer: KafkaProducer<String, String>
 
     init {
         val properties = producerProperties()
@@ -33,21 +32,6 @@ class KafkaTwitterProducer(
             if (exception != null) {
                 logger.error("Something bad happened", exception)
             }
-        })
-    }
-
-    /**
-     * Add a shutdown hook to the producer.
-     *
-     * @param client Twitter client
-     */
-    fun shutdownHook(
-        client: Client
-    ) {
-        Runtime.getRuntime().addShutdownHook(Thread {
-            logger.info("Stopping application...")
-            client.stop()
-            producer.close()
         })
     }
 
