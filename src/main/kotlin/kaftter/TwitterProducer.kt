@@ -7,13 +7,8 @@ import com.twitter.hbc.core.HttpHosts
 import com.twitter.hbc.core.endpoint.StatusesFilterEndpoint
 import com.twitter.hbc.core.processor.StringDelimitedProcessor
 import com.twitter.hbc.httpclient.auth.OAuth1
+import kaftter.kafka.KafkaTwitterProducer
 import mu.KotlinLogging
-import org.apache.kafka.clients.producer.Callback
-import org.apache.kafka.clients.producer.KafkaProducer
-import org.apache.kafka.clients.producer.ProducerConfig
-import org.apache.kafka.clients.producer.ProducerRecord
-import org.apache.kafka.common.serialization.StringSerializer
-import java.util.Properties
 import java.util.concurrent.BlockingQueue
 import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.TimeUnit
@@ -32,23 +27,15 @@ class TwitterProducer {
         val client = createTwitterClient(messageQueue, listOf("bitcoin", "usa", "politics", "sports"))
         client.connect()
 
-        val kafkaProducer = createKafkaProducer()
+        val kafkaProducer = KafkaTwitterProducer("localhost:9092")
 
-        Runtime.getRuntime().addShutdownHook(Thread {
-            logger.info("Stopping application...")
-            client.stop()
-            kafkaProducer.close()
-        })
+        kafkaProducer.shutdownHook(client)
 
         while (!client.isDone) {
             try {
                 val message = messageQueue.poll(5, TimeUnit.SECONDS)
-                logger.info(message)
-                kafkaProducer.send(ProducerRecord("twitter_tweets", null, message), Callback { _, exception ->
-                    if (exception != null) {
-                        logger.error("Something bad happened", exception)
-                    }
-                })
+                logger.info { message }
+                kafkaProducer.sendMessage(message)
             } catch (e: InterruptedException) {
                 logger.error { e }
                 client.stop()
@@ -76,34 +63,6 @@ class TwitterProducer {
             .endpoint(endpoint)
             .processor(StringDelimitedProcessor(messageQueue))
             .build()
-    }
-
-    private fun createKafkaProducer(): KafkaProducer<String, String> {
-        val properties = producerProperties()
-
-        return KafkaProducer(properties)
-    }
-
-    /**
-     * Kafka Producer properties setup.
-     *
-     * @return Producer properties.
-     */
-    private fun producerProperties(): Properties {
-        val properties = Properties()
-        val bootstrapServers = "localhost:9092"
-        properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers)
-        properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer::class.java.name)
-        properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer::class.java.name)
-        properties.setProperty(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, "true")
-        properties.setProperty(ProducerConfig.ACKS_CONFIG, "all")
-        properties.setProperty(ProducerConfig.RETRIES_CONFIG, Int.MAX_VALUE.toString())
-        properties.setProperty(ProducerConfig.MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION, "5")
-        properties.setProperty(ProducerConfig.COMPRESSION_TYPE_CONFIG, "snappy")
-        properties.setProperty(ProducerConfig.BATCH_SIZE_CONFIG, (32 * 1024).toString())
-        properties.setProperty(ProducerConfig.LINGER_MS_CONFIG, "20")
-
-        return properties
     }
 
 }
