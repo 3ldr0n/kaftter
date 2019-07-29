@@ -3,6 +3,7 @@ version: '3.3'
 services:
   zookeeper:
     image: zookeeper:latest
+    container_name: kaftter_zookeeper
     ports:
       - "2181:2181"
     environment:
@@ -11,6 +12,7 @@ services:
 
   kafka:
     image: wurstmeister/kafka
+    container_name: kaftter_kafka
     ports:
       - "9092:9092"
     environment:
@@ -29,7 +31,7 @@ services:
       - cluster.initial_master_nodes=es01
       - cluster.name=docker-cluster
       - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
     ulimits:
       memlock:
         soft: -1
