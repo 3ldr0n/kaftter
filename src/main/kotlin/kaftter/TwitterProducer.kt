@@ -86,3 +86,8 @@ class TwitterProducer {
     }
 
 }
+
+fun main() {
+    val producer = TwitterProducer()
+    producer.run()
+}
