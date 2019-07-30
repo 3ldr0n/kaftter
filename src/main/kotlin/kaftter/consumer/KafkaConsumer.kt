@@ -15,6 +15,9 @@ fun consumerProperties(): Properties {
     properties.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer::class.java.name)
     properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, groupId)
     properties.setProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest")
+    properties.setProperty(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false")
+    properties.setProperty(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, "100")
+
     return properties
 }
 

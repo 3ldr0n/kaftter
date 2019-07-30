@@ -24,6 +24,7 @@ dependencies {
     implementation("io.github.microutils:kotlin-logging:$kotlinLoggingVersion")
     implementation("com.twitter:hbc-core:$hbcVersion")
     implementation("org.elasticsearch.client:elasticsearch-rest-high-level-client:6.4.0")
+    implementation("com.google.code.gson:gson:2.8.5")
 }
 
 tasks.withType<KotlinCompile> {
