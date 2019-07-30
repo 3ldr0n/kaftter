@@ -23,7 +23,7 @@ fun main() {
         val records = consumer.poll(Duration.ofMillis(100))
         val recordCount = records.count()
 
-        logger.info { "Received: ${records.count()} recods"}
+        logger.info { "Received: ${records.count()} records"}
         val bulkRequest = BulkRequest()
 
         for (record in records) {
@@ -73,7 +73,7 @@ fun sendAndCommit(
 ) {
     client.bulk(bulkRequest, RequestOptions.DEFAULT)
 
-    logger.info { "Commiting offsets..." }
+    logger.info { "Committing offsets..." }
     consumer.commitSync()
     logger.info { "Offsets have been committed" }
 }

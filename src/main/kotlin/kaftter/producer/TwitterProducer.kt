@@ -1,4 +1,4 @@
-package kaftter
+package kaftter.producer
 
 import com.twitter.hbc.ClientBuilder
 import com.twitter.hbc.core.Client
@@ -7,7 +7,6 @@ import com.twitter.hbc.core.HttpHosts
 import com.twitter.hbc.core.endpoint.StatusesFilterEndpoint
 import com.twitter.hbc.core.processor.StringDelimitedProcessor
 import com.twitter.hbc.httpclient.auth.OAuth1
-import kaftter.producer.KafkaTwitterProducer
 import mu.KotlinLogging
 import java.util.concurrent.BlockingQueue
 import java.util.concurrent.LinkedBlockingQueue
