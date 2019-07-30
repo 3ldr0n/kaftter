@@ -1,4 +1,4 @@
-package kaftter.kafka
+package kaftter.producer
 
 import mu.KotlinLogging
 import org.apache.kafka.clients.producer.Callback

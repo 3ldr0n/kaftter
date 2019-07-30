@@ -5,6 +5,14 @@ import org.apache.kafka.clients.consumer.KafkaConsumer
 import org.apache.kafka.common.serialization.StringDeserializer
 import java.util.Properties
 
+fun createConsumer(topic: String): KafkaConsumer<String, String> {
+    val properties = consumerProperties()
+    val consumer = KafkaConsumer<String, String>(properties)
+    consumer.subscribe(listOf(topic))
+
+    return consumer
+}
+
 fun consumerProperties(): Properties {
     val properties = Properties()
     val bootstrapServers = "localhost:9092"
@@ -19,13 +27,5 @@ fun consumerProperties(): Properties {
     properties.setProperty(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, "100")
 
     return properties
-}
-
-fun createConsumer(topic: String): KafkaConsumer<String, String> {
-    val properties = consumerProperties()
-    val consumer = KafkaConsumer<String, String>(properties)
-    consumer.subscribe(listOf(topic))
-
-    return consumer
 }
 
