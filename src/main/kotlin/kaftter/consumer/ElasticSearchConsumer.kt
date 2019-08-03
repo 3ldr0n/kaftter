@@ -24,7 +24,7 @@ fun main() {
         val records = consumer.poll(Duration.ofMillis(100))
         val recordCount = records.count()
 
-        logger.info { "Received: ${records.count()} records"}
+        logger.info { "Received: ${records.count()} records" }
         val bulkRequest = buildBulkRequest(records, logger)
 
         if (recordCount > 0) {
@@ -39,17 +39,19 @@ fun buildBulkRequest(
     logger: KLogger
 ): BulkRequest {
     val bulkRequest = BulkRequest()
-    for (record in records) {
+
+    records.forEach {
         try {
-            val id = extractIdFromTweet(record.value())
+            val id = extractIdFromTweet(it.value())
 
             val indexRequest = IndexRequest("twitter", "tweets", id)
-                .source(record.value(), XContentType.JSON)
+                .source(it.value(), XContentType.JSON)
 
             bulkRequest.add(indexRequest)
         } catch (e: NullPointerException) {
-            logger.warn { "Skipping bad data: ${record.value()}" }
+            logger.warn { "Skipping bad data: ${it.value()}" }
         }
+
     }
 
     return bulkRequest
@@ -59,7 +61,8 @@ fun createClient(): RestHighLevelClient {
     val hostname = "localhost"
 
     val builder = RestClient.builder(
-        HttpHost(hostname, 9200, "http"))
+        HttpHost(hostname, 9200, "http")
+    )
 
     return RestHighLevelClient(builder)
 }
