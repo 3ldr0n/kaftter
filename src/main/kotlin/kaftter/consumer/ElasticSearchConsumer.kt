@@ -4,6 +4,7 @@ import com.google.gson.JsonParser
 import mu.KLogger
 import mu.KotlinLogging
 import org.apache.http.HttpHost
+import org.apache.kafka.clients.consumer.ConsumerRecords
 import org.apache.kafka.clients.consumer.KafkaConsumer
 import org.elasticsearch.action.bulk.BulkRequest
 import org.elasticsearch.action.index.IndexRequest
@@ -24,28 +25,34 @@ fun main() {
         val recordCount = records.count()
 
         logger.info { "Received: ${records.count()} records"}
-        val bulkRequest = BulkRequest()
-
-        for (record in records) {
-            try {
-                val id = extractIdFromTweet(record.value())
-
-                val indexRequest = IndexRequest("twitter", "tweets", id)
-                    .source(record.value(), XContentType.JSON)
-
-                bulkRequest.add(indexRequest)
-            } catch (e: NullPointerException) {
-                logger.warn { "Skipping bad data: ${record.value()}" }
-            }
-        }
+        val bulkRequest = buildBulkRequest(records, logger)
 
         if (recordCount > 0) {
             sendAndCommit(client, bulkRequest, logger, consumer)
             Thread.sleep(1000)
         }
+    }
+}
 
+fun buildBulkRequest(
+    records: ConsumerRecords<String, String>,
+    logger: KLogger
+): BulkRequest {
+    val bulkRequest = BulkRequest()
+    for (record in records) {
+        try {
+            val id = extractIdFromTweet(record.value())
+
+            val indexRequest = IndexRequest("twitter", "tweets", id)
+                .source(record.value(), XContentType.JSON)
+
+            bulkRequest.add(indexRequest)
+        } catch (e: NullPointerException) {
+            logger.warn { "Skipping bad data: ${record.value()}" }
+        }
     }
 
+    return bulkRequest
 }
 
 fun createClient(): RestHighLevelClient {
