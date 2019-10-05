@@ -1,4 +1,4 @@
-package kaftter.producer
+package kaftterproducer.producer
 
 import com.twitter.hbc.ClientBuilder
 import com.twitter.hbc.core.Client
@@ -40,7 +40,7 @@ class TwitterProducer {
             }
         }
 
-        logger.info("End of Application execution.")
+        logger.info { "m=run, End of Application execution." }
     }
 
     /**
@@ -78,15 +78,10 @@ class TwitterProducer {
         kafkaProducer: KafkaTwitterProducer
     ) {
         Runtime.getRuntime().addShutdownHook(Thread {
-            logger.info("Stopping application...")
+            logger.info { "m=shutdownHook, Stopping application..." }
             client.stop()
             kafkaProducer.producer.close()
         })
     }
 
-}
-
-fun main() {
-    val producer = TwitterProducer()
-    producer.run()
 }

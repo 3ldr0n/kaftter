@@ -1,4 +1,4 @@
-package kaftter.producer
+package kaftterproducer.producer
 
 import mu.KotlinLogging
 import org.apache.kafka.clients.producer.Callback
@@ -30,7 +30,7 @@ class KafkaTwitterProducer(
     ) {
         producer.send(ProducerRecord("twitter_tweets", null, message), Callback { _, exception ->
             if (exception != null) {
-                logger.error("Something bad happened", exception)
+                logger.error("m=sendMessage, Something bad happened", exception)
             }
         })
     }
