@@ -33,4 +33,6 @@ services:
     restart: always
     volumes:
       - ./cassandra_data:/var/lib/cassandra
+      - "./cassandra-init.sh:/cassandra-init.sh"
+    command: "sh /cassandra-init.sh"
 

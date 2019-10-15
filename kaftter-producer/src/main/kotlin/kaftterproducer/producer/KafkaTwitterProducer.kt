@@ -1,18 +1,18 @@
 package kaftterproducer.producer
 
-import mu.KotlinLogging
 import org.apache.kafka.clients.producer.Callback
 import org.apache.kafka.clients.producer.KafkaProducer
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.clients.producer.ProducerRecord
 import org.apache.kafka.common.serialization.StringSerializer
+import org.slf4j.LoggerFactory
 import java.util.Properties
 
 class KafkaTwitterProducer(
     private val bootstrapServers: String
 ) {
 
-    private val logger = KotlinLogging.logger {}
+    private val logger = LoggerFactory.getLogger(KafkaTwitterProducer::class.java)
     val producer: KafkaProducer<String, String>
 
     init {
@@ -30,7 +30,7 @@ class KafkaTwitterProducer(
     ) {
         producer.send(ProducerRecord("stream.tweets", null, message), Callback { _, exception ->
             if (exception != null) {
-                logger.error("m=sendMessage, Something bad happened", exception)
+                logger.error("m=KafkaTwitterProducer.sendMessage, Something bad happened", exception)
             }
         })
     }
