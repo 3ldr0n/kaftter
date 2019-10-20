@@ -1,0 +1,9 @@
+language: java
+
+jdk:
+  - openjdk11
+
+script:
+  - cd kaftter
+  - ./gradlew clean --info --stacktrace
+  - ./gradlew build test --info --stacktrace
