@@ -27,3 +27,13 @@ hs_err_pid*
 
 cassandra_data/*
 consumer/*
+
+.gradle
+build/
+!kaftter/gradle/wrapper/gradle-wrapper.jar
+!kaftter/**/src/main/**
+!kaftter/**/src/test/**
+!kaftter-producer/gradle/wrapper/gradle-wrapper.jar
+!kaftter-producer/**/src/main/**
+!kaftter-producer/**/src/test/**
+kaftter/gradle.properties
