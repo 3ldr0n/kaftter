@@ -1,0 +1,15 @@
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: tweets-consumer
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+  data:
+    cassandra:
+      keyspace-name: kaftter
+      schema-action: CREATE_IF_NOT_EXISTS
+      contact-points: localhost
+      port: 9042

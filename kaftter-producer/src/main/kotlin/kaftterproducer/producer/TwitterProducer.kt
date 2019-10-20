@@ -1,4 +1,4 @@
-package kaftter.producer
+package kaftterproducer.producer
 
 import com.twitter.hbc.ClientBuilder
 import com.twitter.hbc.core.Client
@@ -7,7 +7,7 @@ import com.twitter.hbc.core.HttpHosts
 import com.twitter.hbc.core.endpoint.StatusesFilterEndpoint
 import com.twitter.hbc.core.processor.StringDelimitedProcessor
 import com.twitter.hbc.httpclient.auth.OAuth1
-import mu.KotlinLogging
+import org.slf4j.LoggerFactory
 import java.util.concurrent.BlockingQueue
 import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.TimeUnit
@@ -19,7 +19,7 @@ class TwitterProducer {
     private val token = System.getenv("TWITTER_TOKEN")
     private val secret = System.getenv("TWITTER_SECRET")
 
-    private val logger = KotlinLogging.logger {}
+    private val logger = LoggerFactory.getLogger(TwitterProducer::class.java)
 
     fun run() {
         val messageQueue = LinkedBlockingQueue<String>(1000)
@@ -32,15 +32,15 @@ class TwitterProducer {
         while (!client.isDone) {
             try {
                 val message = messageQueue.poll(5, TimeUnit.SECONDS)
-                logger.info { message }
+                logger.info(message)
                 kafkaProducer.sendMessage(message)
             } catch (e: InterruptedException) {
-                logger.error { e }
+                logger.error("m=TwitterProducer.run", e)
                 client.stop()
             }
         }
 
-        logger.info("End of Application execution.")
+        logger.info("m=TwitterProducer.run, End of Application execution.")
     }
 
     /**
@@ -78,15 +78,10 @@ class TwitterProducer {
         kafkaProducer: KafkaTwitterProducer
     ) {
         Runtime.getRuntime().addShutdownHook(Thread {
-            logger.info("Stopping application...")
+            logger.info("m=TwitterProducer.shutdownHook, Stopping application...")
             client.stop()
             kafkaProducer.producer.close()
         })
     }
 
-}
-
-fun main() {
-    val producer = TwitterProducer()
-    producer.run()
 }

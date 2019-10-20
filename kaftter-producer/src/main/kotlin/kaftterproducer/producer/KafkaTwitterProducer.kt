@@ -1,18 +1,18 @@
-package kaftter.producer
+package kaftterproducer.producer
 
-import mu.KotlinLogging
 import org.apache.kafka.clients.producer.Callback
 import org.apache.kafka.clients.producer.KafkaProducer
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.clients.producer.ProducerRecord
 import org.apache.kafka.common.serialization.StringSerializer
+import org.slf4j.LoggerFactory
 import java.util.Properties
 
 class KafkaTwitterProducer(
     private val bootstrapServers: String
 ) {
 
-    private val logger = KotlinLogging.logger {}
+    private val logger = LoggerFactory.getLogger(KafkaTwitterProducer::class.java)
     val producer: KafkaProducer<String, String>
 
     init {
@@ -21,16 +21,16 @@ class KafkaTwitterProducer(
     }
 
     /**
-     * Send a message to the twitter_tweets topic.
+     * Send a message to the tweets topic.
      *
      * @param message The message to be sent.
      */
     fun sendMessage(
         message: String?
     ) {
-        producer.send(ProducerRecord("twitter_tweets", null, message), Callback { _, exception ->
+        producer.send(ProducerRecord("stream.tweets", null, message), Callback { _, exception ->
             if (exception != null) {
-                logger.error("Something bad happened", exception)
+                logger.error("m=KafkaTwitterProducer.sendMessage, Something bad happened", exception)
             }
         })
     }
@@ -46,8 +46,8 @@ class KafkaTwitterProducer(
         properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers)
         properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer::class.java.name)
         properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer::class.java.name)
-        properties.setProperty(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, "true")
-        properties.setProperty(ProducerConfig.ACKS_CONFIG, "all")
+        properties.setProperty(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, "false")
+        properties.setProperty(ProducerConfig.ACKS_CONFIG, "0")
         properties.setProperty(ProducerConfig.RETRIES_CONFIG, Int.MAX_VALUE.toString())
         properties.setProperty(ProducerConfig.MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION, "5")
         properties.setProperty(ProducerConfig.COMPRESSION_TYPE_CONFIG, "snappy")
