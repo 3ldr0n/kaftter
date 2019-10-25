@@ -1,8 +1,5 @@
 package kaftter.service;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import kaftter.domain.TweetEntity;
 import kaftter.repository.TweetRepository;
 import org.junit.Test;
@@ -12,6 +9,9 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.core.io.ClassPathResource;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;

@@ -1,12 +1,13 @@
 package kaftter.domain;
 
-import java.io.Serializable;
 import kaftter.vo.Tweet;
 import kaftter.vo.User;
 import lombok.Builder;
 import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
+
+import java.io.Serializable;
 
 @Table("tweets")
 @Builder
