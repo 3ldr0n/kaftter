@@ -3,7 +3,7 @@ package kaftter.service;
 import kaftter.domain.TweetEntity;
 import kaftter.repository.TweetRepository;
 import kaftter.vo.Tweet;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.cassandra.core.query.CassandraPageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
@@ -19,8 +19,8 @@ public class TweetService {
         this.tweetRepository = tweetRepository;
     }
 
-    public List<Tweet> findTweets() {
-        final Pageable pages = PageRequest.of(0, 50);
+    public List<Tweet> findTweets(final int pageSize) {
+        final Pageable pages = CassandraPageRequest.of(0, pageSize);
         final Slice<TweetEntity> tweetEntities = tweetRepository.findAll(pages);
 
         final List<Tweet> tweets = new LinkedList<>();

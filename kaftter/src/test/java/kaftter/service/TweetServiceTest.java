@@ -8,12 +8,14 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -26,14 +28,16 @@ public class TweetServiceTest {
     private TweetService tweetService;
 
     @Test
-    public void get50Tweets() throws Exception {
-        final Slice sliceOfTweetEntities = mock(Slice.class);
-        when(tweetRepository.findAll(PageRequest.of(0, 50)))
-                .thenReturn(sliceOfTweetEntities);
+    public void getTweets() {
+        final TweetEntity tweetEntityMock = mock(TweetEntity.class);
+        final Slice<TweetEntity> slice = new SliceImpl<>(List.of(tweetEntityMock),
+                mock(Pageable.class), false);
+        when(tweetRepository.findAll(isA(Pageable.class)))
+                .thenReturn(slice);
 
-        final List<Tweet> tweets = tweetService.findTweets();
+        final List<Tweet> tweets = tweetService.findTweets(1);
 
         assertThat(tweets).isNotNull();
-        assertThat(tweets).hasSize(50);
+        assertThat(tweets).hasSize(1);
     }
 }
