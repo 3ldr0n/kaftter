@@ -21,7 +21,7 @@ services:
       KAFKA_CREATE_TOPICS: "stream.tweets:6:1"
 
   cassandra:
-    image: cassandra:3.11.4
+    image: cassandra:3.11.5
     container_name: kaftter_cassandra
     ports:
       - "9042:9042"
