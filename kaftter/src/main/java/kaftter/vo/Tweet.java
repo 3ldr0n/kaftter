@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.StringJoiner;
 import java.util.TimeZone;
 
 @Getter
@@ -34,6 +35,7 @@ public class Tweet {
     private String language;
     @JsonProperty("timestamp_ms")
     private Long timestamp;
+    private static final String CSV_SEPARATOR = ",";
 
     public TweetEntity fromValue() {
         final var date = LocalDateTime.ofInstant(
@@ -55,5 +57,22 @@ public class Tweet {
                 .userScreenName(user.getScreenName())
                 .userFollowers(user.getFollowers())
                 .build();
+    }
+
+    public String toCSV() {
+        final StringJoiner joiner = new StringJoiner(CSV_SEPARATOR);
+        joiner.add(id.toString());
+        joiner.add(text);
+        joiner.add(String.valueOf(quoteCount));
+        joiner.add(String.valueOf(replyCount));
+        joiner.add(String.valueOf(retweetCount));
+        joiner.add(String.valueOf(favoriteCount));
+        joiner.add(language);
+        joiner.add(timestamp.toString());
+        joiner.add(user.getId().toString());
+        joiner.add(user.getName());
+        joiner.add(user.getScreenName());
+        joiner.add(user.getFollowers().toString());
+        return joiner.toString();
     }
 }
