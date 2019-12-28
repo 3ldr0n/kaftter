@@ -23,16 +23,16 @@ public class TweetController {
         this.tweetService = tweetService;
     }
 
-    @GetMapping("/{pageSize}")
-    public ResponseEntity getTweets(@PathVariable("pageSize") final int pageSize) {
-        final List<Tweet> tweets = tweetService.findTweets(pageSize);
+    @GetMapping("/{numberOfTweets}")
+    public ResponseEntity getTweets(@PathVariable("numberOfTweets") final int numberOfTweets) {
+        final List<Tweet> tweets = tweetService.findTweets(numberOfTweets);
         return ResponseEntity.status(HttpStatus.OK).body(tweets);
     }
 
-    @GetMapping("/export/{pageSize}")
-    public ResponseEntity exportTweets(@PathVariable("pageSize") final int pageSize) {
+    @GetMapping("/export/{numberOfTweets}")
+    public ResponseEntity exportTweets(@PathVariable("numberOfTweets") final int numberOfTweets) {
         try {
-            final Resource resource = tweetService.generateCsvFile(pageSize);
+            final Resource resource = tweetService.generateCsvFile(numberOfTweets);
 
             return ResponseEntity.status(HttpStatus.OK)
                     .contentType(MediaType.TEXT_PLAIN)

@@ -8,18 +8,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.InputStreamSource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.cassandra.core.query.CassandraPageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -41,7 +38,7 @@ public class TweetService {
         return tweets;
     }
 
-    public Resource generateCsvFile(final int numberOfTweets) throws IOException  {
+    public Resource generateCsvFile(final int numberOfTweets) throws IOException {
         final List<Tweet> tweets = findTweets(numberOfTweets);
         final File temp = File.createTempFile("temp.csv", ".tmp");
         final FileWriter writer = new FileWriter(temp);
