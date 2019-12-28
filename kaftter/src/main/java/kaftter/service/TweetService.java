@@ -45,12 +45,12 @@ public class TweetService {
         try (final CSVPrinter printer = new CSVPrinter(writer, CSVFormat.DEFAULT.withHeader(TweetCSVHeaders.class))) {
             tweets.forEach(tweet -> {
                 try {
-                    printer.print(tweet.toCSV());
+                    printer.printRecord(tweet.toCSV());
+                    printer.flush();
                 } catch (final IOException e) {
                     log.error("error", e);
                 }
             });
-            printer.flush();
             writer.flush();
         }
 

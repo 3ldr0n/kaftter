@@ -11,7 +11,8 @@ import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.StringJoiner;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TimeZone;
 
 @Getter
@@ -35,7 +36,6 @@ public class Tweet {
     private String language;
     @JsonProperty("timestamp_ms")
     private Long timestamp;
-    private static final String CSV_SEPARATOR = ",";
 
     public TweetEntity fromValue() {
         final var date = LocalDateTime.ofInstant(
@@ -59,20 +59,20 @@ public class Tweet {
                 .build();
     }
 
-    public String toCSV() {
-        final StringJoiner joiner = new StringJoiner(CSV_SEPARATOR);
-        joiner.add(id.toString());
-        joiner.add(text);
-        joiner.add(String.valueOf(quoteCount));
-        joiner.add(String.valueOf(replyCount));
-        joiner.add(String.valueOf(retweetCount));
-        joiner.add(String.valueOf(favoriteCount));
-        joiner.add(language);
-        joiner.add(timestamp.toString());
-        joiner.add(user.getId().toString());
-        joiner.add(user.getName());
-        joiner.add(user.getScreenName());
-        joiner.add(user.getFollowers().toString());
-        return joiner.toString();
+    public List<String> toCSV() {
+        final List<String> list = new ArrayList<>(12);
+        list.add(id.toString());
+        list.add(text);
+        list.add(String.valueOf(quoteCount));
+        list.add(String.valueOf(replyCount));
+        list.add(String.valueOf(retweetCount));
+        list.add(String.valueOf(favoriteCount));
+        list.add(language);
+        list.add(timestamp.toString());
+        list.add(user.getId().toString());
+        list.add(user.getName());
+        list.add(user.getScreenName());
+        list.add(user.getFollowers().toString());
+        return list;
     }
 }

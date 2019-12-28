@@ -24,13 +24,13 @@ public class TweetController {
     }
 
     @GetMapping("/{numberOfTweets}")
-    public ResponseEntity getTweets(@PathVariable("numberOfTweets") final int numberOfTweets) {
+    public ResponseEntity<List<Tweet>> getTweets(@PathVariable("numberOfTweets") final int numberOfTweets) {
         final List<Tweet> tweets = tweetService.findTweets(numberOfTweets);
         return ResponseEntity.status(HttpStatus.OK).body(tweets);
     }
 
     @GetMapping("/export/{numberOfTweets}")
-    public ResponseEntity exportTweets(@PathVariable("numberOfTweets") final int numberOfTweets) {
+    public ResponseEntity<Resource> exportTweets(@PathVariable("numberOfTweets") final int numberOfTweets) {
         try {
             final Resource resource = tweetService.generateCsvFile(numberOfTweets);
 

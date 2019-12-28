@@ -1,13 +1,17 @@
 package kaftter.service;
 
 import kaftter.domain.TweetEntity;
+import kaftter.factory.TweetFactory;
 import kaftter.repository.TweetRepository;
 import kaftter.vo.Tweet;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
@@ -27,17 +31,55 @@ public class TweetServiceTest {
     @InjectMocks
     private TweetService tweetService;
 
+    private TweetFactory tweetFactory;
+
+    @Before
+    public void setUp() {
+        tweetFactory = new TweetFactory();
+    }
+
     @Test
-    public void getTweets() {
-        final TweetEntity tweetEntityMock = mock(TweetEntity.class);
-        final Slice<TweetEntity> slice = new SliceImpl<>(List.of(tweetEntityMock),
+    public void getOneTweet() {
+        final int numberOfTweets = 1;
+        final List<TweetEntity> tweetEntityMock = tweetFactory.mockTweetsEntity(numberOfTweets);
+        final Slice<TweetEntity> slice = new SliceImpl<>(tweetEntityMock,
                 mock(Pageable.class), false);
         when(tweetRepository.findAll(isA(Pageable.class)))
                 .thenReturn(slice);
 
-        final List<Tweet> tweets = tweetService.findTweets(1);
+        final List<Tweet> tweets = tweetService.findTweets(numberOfTweets);
 
         assertThat(tweets).isNotNull();
-        assertThat(tweets).hasSize(1);
+        assertThat(tweets).hasSize(numberOfTweets);
     }
+
+    @Test
+    public void getTenTweets() {
+        final int numberOfTweets = 10;
+        final List<TweetEntity> tweetEntityMock = tweetFactory.mockTweetsEntity(numberOfTweets);
+        final Slice<TweetEntity> slice = new SliceImpl<>(tweetEntityMock,
+                mock(Pageable.class), false);
+        when(tweetRepository.findAll(isA(Pageable.class)))
+                .thenReturn(slice);
+
+        final List<Tweet> tweets = tweetService.findTweets(numberOfTweets);
+
+        assertThat(tweets).isNotNull();
+        assertThat(tweets).hasSize(numberOfTweets);
+    }
+
+    @Test
+    public void generateCSvWithTenTweets() throws Exception {
+        final int numberOfTweets = 10;
+        final List<TweetEntity> tweetEntityMock = tweetFactory.mockTweetsEntity(numberOfTweets);
+        final Slice<TweetEntity> slice = new SliceImpl<>(tweetEntityMock,
+                mock(Pageable.class), false);
+        when(tweetRepository.findAll(isA(Pageable.class)))
+                .thenReturn(slice);
+
+        final Resource resource = tweetService.generateCsvFile(numberOfTweets);
+
+        assertThat(resource).isNotNull();
+    }
+
 }
