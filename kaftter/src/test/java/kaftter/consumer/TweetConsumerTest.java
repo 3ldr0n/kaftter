@@ -1,5 +1,6 @@
-package kaftter.service;
+package kaftter.consumer;
 
+import kaftter.consumer.TweetConsumer;
 import kaftter.domain.TweetEntity;
 import kaftter.exception.InvalidPayloadException;
 import kaftter.repository.TweetRepository;
@@ -22,12 +23,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TweetConsumerServiceTest {
+public class TweetConsumerTest {
     @Mock
     private TweetRepository tweetRepository;
 
     @InjectMocks
-    private TweetConsumerService tweetConsumerService;
+    private TweetConsumer tweetConsumer;
 
     @Test
     public void consume_andSave() throws Exception {
@@ -36,7 +37,7 @@ public class TweetConsumerServiceTest {
         when(tweetRepository.save(any(TweetEntity.class)))
                 .thenReturn(tweetMock);
 
-        tweetConsumerService.consume(payload);
+        tweetConsumer.consume(payload);
 
         verify(tweetRepository, times(1)).save(any(TweetEntity.class));
     }
@@ -45,7 +46,7 @@ public class TweetConsumerServiceTest {
     public void consumeEmptyPayload() throws Exception {
         final var payload = "{}";
 
-        tweetConsumerService.consume(payload);
+        tweetConsumer.consume(payload);
 
         verify(tweetRepository, never()).save(any(TweetEntity.class));
     }
@@ -54,7 +55,7 @@ public class TweetConsumerServiceTest {
     public void consumeInvalidPayload() throws Exception {
         final var payload = "definitely not json";
 
-        tweetConsumerService.consume(payload);
+        tweetConsumer.consume(payload);
 
         verify(tweetRepository, never()).save(any(TweetEntity.class));
     }

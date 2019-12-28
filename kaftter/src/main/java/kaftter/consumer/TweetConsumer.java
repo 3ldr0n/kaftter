@@ -1,4 +1,4 @@
-package kaftter.service;
+package kaftter.consumer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kaftter.domain.TweetEntity;
@@ -13,14 +13,14 @@ import java.io.IOException;
 
 @Service
 @Slf4j
-public class TweetConsumerService {
+public class TweetConsumer {
     private static final String TWEETS_TOPIC = "stream.tweets";
     private static final String CONSUMER_GROUP_ID = "tweets-consumer";
     private static final String EMPTY_PAYLOAD = "{}";
 
     private final TweetRepository tweetRepository;
 
-    public TweetConsumerService(final TweetRepository tweetRepository) {
+    public TweetConsumer(final TweetRepository tweetRepository) {
         this.tweetRepository = tweetRepository;
     }
 
