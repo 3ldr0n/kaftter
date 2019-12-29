@@ -31,7 +31,7 @@ public class ExportTweetServiceTest {
     }
 
     @Test
-    public void generateCSvWithTenTweets() throws Exception {
+    public void generateCSVWithTenTweets() throws Exception {
         final int numberOfTweets = 10;
         final List<Tweet> tweets = tweetFactory.mockTweetsVo(numberOfTweets);
         when(tweetService.findTweets(numberOfTweets)).thenReturn(tweets);
@@ -39,6 +39,20 @@ public class ExportTweetServiceTest {
         final Resource resource = exportTweetService.exportToCSV(numberOfTweets);
 
         assertThat(resource).isNotNull();
+        assertThat(resource.exists()).isTrue();
+        assertThat(resource.getFilename()).contains("csv");
+    }
+
+    @Test
+    public void generateCSVWithFiveTweetsAskingForTen() throws Exception {
+        final int numberOfTweets = 10;
+        final List<Tweet> tweets = tweetFactory.mockTweetsVo(5);
+        when(tweetService.findTweets(numberOfTweets)).thenReturn(tweets);
+
+        final Resource resource = exportTweetService.exportToCSV(numberOfTweets);
+
+        assertThat(resource).isNotNull();
+        assertThat(resource.exists()).isTrue();
         assertThat(resource.getFilename()).contains("csv");
     }
 

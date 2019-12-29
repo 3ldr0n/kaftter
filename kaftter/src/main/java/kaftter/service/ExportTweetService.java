@@ -5,7 +5,6 @@ import kaftter.vo.Tweet;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -71,7 +70,7 @@ public class ExportTweetService {
      * @throws IOException When an error writing the file occurs.
      */
     private File generateCSV(final List<Tweet> tweets) throws IOException {
-        final File temp = File.createTempFile("temp.csv", ".tmp");
+        final File temp = File.createTempFile("temp.csv.", ".tmp");
         final FileWriter writer = new FileWriter(temp);
         try (final CSVPrinter printer = new CSVPrinter(writer, CSVFormat.DEFAULT.withHeader(TweetCSVHeaders.class))) {
             tweets.forEach(tweet ->
