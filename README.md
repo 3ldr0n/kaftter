@@ -41,9 +41,40 @@ GET /api/tweets/{numberOfTweets}
 #### Response payload example
 
 ```json
-{
-  "key": "value"
-}
+[
+  {
+    "id": 1,
+    "text": "a tweet",
+    "user": {
+      "id": 12,
+      "name": "An Interesting Tweeter",
+      "screen_name": "an_interesting_tweeter",
+      "followers_count": 13
+    },
+    "quote_count": 2,
+    "reply_count": 3,
+    "retweet_count": 1,
+    "favorite_count": 0,
+    "lang": "en",
+    "timestamp_ms": 12312983
+  },
+  {
+    "id": 2,
+    "text": "a second tweet",
+    "user": {
+      "id": 12,
+      "name": "An Interesting Tweeter",
+      "screen_name": "an_interesting_tweeter",
+      "followers_count": 13
+    },
+    "quote_count": 0,
+    "reply_count": 1,
+    "retweet_count": 0,
+    "favorite_count": 1,
+    "lang": "en",
+    "timestamp_ms": 12417820
+  }
+]
 ```
 
 ### Export tweets to csv
