@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TimeZone;
 
 @Getter
@@ -55,5 +57,22 @@ public class Tweet {
                 .userScreenName(user.getScreenName())
                 .userFollowers(user.getFollowers())
                 .build();
+    }
+
+    public List<String> toCSV() {
+        final List<String> list = new ArrayList<>(12);
+        list.add(id.toString());
+        list.add(text);
+        list.add(String.valueOf(quoteCount));
+        list.add(String.valueOf(replyCount));
+        list.add(String.valueOf(retweetCount));
+        list.add(String.valueOf(favoriteCount));
+        list.add(language);
+        list.add(timestamp.toString());
+        list.add(user.getId().toString());
+        list.add(user.getName());
+        list.add(user.getScreenName());
+        list.add(user.getFollowers().toString());
+        return list;
     }
 }
