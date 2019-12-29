@@ -1,5 +1,8 @@
 package kaftter.domain;
 
+/**
+ * Headers used to export tweets to CSV.
+ */
 public enum TweetCSVHeaders {
     ID,
     TEXT,

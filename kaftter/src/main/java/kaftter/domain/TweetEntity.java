@@ -3,17 +3,18 @@ package kaftter.domain;
 import kaftter.vo.Tweet;
 import kaftter.vo.User;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
 import java.io.Serializable;
 
+/**
+ * Tweets table.
+ */
 @Table("tweets")
-@Getter
-@Setter
+@Data
 @Builder
 public class TweetEntity implements Serializable {
     @PrimaryKey

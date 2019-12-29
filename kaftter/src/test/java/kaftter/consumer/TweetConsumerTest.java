@@ -1,6 +1,5 @@
 package kaftter.consumer;
 
-import kaftter.consumer.TweetConsumer;
 import kaftter.domain.TweetEntity;
 import kaftter.exception.InvalidPayloadException;
 import kaftter.repository.TweetRepository;
@@ -31,7 +30,7 @@ public class TweetConsumerTest {
     private TweetConsumer tweetConsumer;
 
     @Test
-    public void consume_andSave() throws Exception {
+    public void consumeAndSave() throws Exception {
         final String payload = readValidPayload();
         final TweetEntity tweetMock = mock(TweetEntity.class);
         when(tweetRepository.save(any(TweetEntity.class)))
@@ -56,6 +55,13 @@ public class TweetConsumerTest {
         final var payload = "definitely not json";
 
         tweetConsumer.consume(payload);
+
+        verify(tweetRepository, never()).save(any(TweetEntity.class));
+    }
+
+    @Test(expected = InvalidPayloadException.class)
+    public void consumerNullMessage() throws Exception {
+        tweetConsumer.consume(null);
 
         verify(tweetRepository, never()).save(any(TweetEntity.class));
     }
