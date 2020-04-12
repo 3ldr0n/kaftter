@@ -6,6 +6,10 @@
 
 Takes data from Twitter and saves it in cassandra.
 
+## Architecture
+
+![Architecture](./docs/kaftter.png)
+
 ## Local environment
 
 ```bash
