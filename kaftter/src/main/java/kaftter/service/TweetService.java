@@ -36,4 +36,9 @@ public class TweetService {
         return tweets;
     }
 
+    public void save(final Tweet tweet) {
+        final TweetEntity tweetEntity = tweet.fromValue();
+        tweetRepository.save(tweetEntity);
+    }
+
 }
