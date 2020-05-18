@@ -3,7 +3,7 @@ package kaftter.exception;
 /**
  * Exception used when consuming an invalid payload from the tweets topic.
  */
-public class InvalidPayloadException extends Exception {
+public class InvalidPayloadException extends RuntimeException {
     public InvalidPayloadException(final String message) {
         super(message);
     }

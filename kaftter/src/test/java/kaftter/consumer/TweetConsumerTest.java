@@ -1,73 +1,45 @@
 package kaftter.consumer;
 
-import kaftter.domain.TweetEntity;
 import kaftter.exception.InvalidPayloadException;
-import kaftter.repository.TweetRepository;
+import kaftter.service.TweetService;
+import kaftter.tweet.Tweet;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.core.io.ClassPathResource;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TweetConsumerTest {
     @Mock
-    private TweetRepository tweetRepository;
+    private TweetService tweetService;
 
     @InjectMocks
     private TweetConsumer tweetConsumer;
 
     @Test
-    public void consumeAndSave() throws Exception {
-        final String payload = readValidPayload();
-        final TweetEntity tweetMock = mock(TweetEntity.class);
-        when(tweetRepository.save(any(TweetEntity.class)))
-                .thenReturn(tweetMock);
+    public void consumer_valid_message_should_save_to_database() {
+        final var payload = new Tweet();
+        doNothing().when(tweetService).save(payload);
 
         tweetConsumer.consume(payload);
 
-        verify(tweetRepository, times(1)).save(any(TweetEntity.class));
+        verify(tweetService).save(any(Tweet.class));
     }
 
-    @Test(expected = InvalidPayloadException.class)
-    public void consumeEmptyPayload() throws Exception {
-        final var payload = "{}";
+    @Test
+    public void consume_null_message_should_throw_exception() {
+        assertThatExceptionOfType(InvalidPayloadException.class).isThrownBy(() ->
+                tweetConsumer.consume(null)
+        );
 
-        tweetConsumer.consume(payload);
-
-        verify(tweetRepository, never()).save(any(TweetEntity.class));
+        verify(tweetService, never()).save(any(Tweet.class));
     }
 
-    @Test(expected = InvalidPayloadException.class)
-    public void consumeInvalidPayload() throws Exception {
-        final var payload = "definitely not json";
-
-        tweetConsumer.consume(payload);
-
-        verify(tweetRepository, never()).save(any(TweetEntity.class));
-    }
-
-    @Test(expected = InvalidPayloadException.class)
-    public void consumerNullMessage() throws Exception {
-        tweetConsumer.consume(null);
-
-        verify(tweetRepository, never()).save(any(TweetEntity.class));
-    }
-
-    private String readValidPayload() throws IOException {
-        final File validPayloadFile = new ClassPathResource("valid_payload.json").getFile();
-        return new String(Files.readAllBytes(validPayloadFile.toPath()));
-    }
 }

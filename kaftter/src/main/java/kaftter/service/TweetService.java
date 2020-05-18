@@ -1,5 +1,6 @@
 package kaftter.service;
 
+import kaftter.converter.TweetEntityConverter;
 import kaftter.domain.TweetEntity;
 import kaftter.repository.TweetRepository;
 import kaftter.vo.Tweet;
@@ -36,8 +37,8 @@ public class TweetService {
         return tweets;
     }
 
-    public void save(final Tweet tweet) {
-        final TweetEntity tweetEntity = tweet.fromValue();
+    public void save(final kaftter.tweet.Tweet tweet) {
+        final var tweetEntity = TweetEntityConverter.convert(tweet);
         tweetRepository.save(tweetEntity);
     }
 

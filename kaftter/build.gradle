@@ -1,9 +1,10 @@
 plugins {
-    id "org.springframework.boot" version "2.1.9.RELEASE"
-    id "io.spring.dependency-management" version "1.0.7.RELEASE"
-    id "org.sonarqube" version "2.7.1"
-    id "jacoco"
     id "java"
+    id "jacoco"
+    id "org.sonarqube" version "2.7.1"
+    id "org.springframework.boot" version "2.2.6.RELEASE"
+    id "io.spring.dependency-management" version "1.0.7.RELEASE"
+    id "com.commercehub.gradle.plugin.avro" version "0.14.1"
 }
 
 group 'kaftter'
@@ -18,21 +19,34 @@ configurations {
 
 repositories {
     mavenCentral()
+    maven {
+        url 'http://packages.confluent.io/maven/'
+    }
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-data-cassandra")
-    implementation("org.springframework.kafka:spring-kafka")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("org.apache.kafka:kafka-clients:2.3.0")
-    implementation("org.apache.commons:commons-csv:1.7")
+    implementation("org.springframework.boot:spring-boot-starter-web",
+            "org.springframework.boot:spring-boot-starter-data-cassandra",
+            "org.springframework.kafka:spring-kafka",
+            "com.fasterxml.jackson.module:jackson-module-kotlin",
+            "org.apache.kafka:kafka-clients:2.3.0",
+            "org.apache.commons:commons-csv:1.7",
+            "org.apache.avro:avro:1.9.2",
+            "io.confluent:kafka-avro-serializer:5.4.1")
     compileOnly("org.projectlombok:lombok:1.18.10")
     annotationProcessor("org.projectlombok:lombok:1.18.10")
     testCompileOnly("org.projectlombok:lombok:1.18.10")
     testAnnotationProcessor("org.projectlombok:lombok:1.18.10")
-    testImplementation("org.mockito:mockito-core:2.21.0")
-    testImplementation("org.assertj:assertj-core:3.11.1")
+    testImplementation("org.mockito:mockito-core:3.0.0",
+            "org.junit.jupiter:junit-jupiter-engine:5.3.2",
+            "org.junit.jupiter:junit-jupiter-api:5.3.2",
+            "org.assertj:assertj-core:3.11.1")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.springframework.kafka:spring-kafka-test")
+}
+
+avro {
+    fieldVisibility = "PRIVATE"
+    outputCharacterEncoding = "UTF-8"
+    validateDefaults = true
+    createSetters = false
 }

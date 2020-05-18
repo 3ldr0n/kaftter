@@ -1,15 +1,15 @@
-app:
-  kafka:
-    topic: stream.tweets
+kafka:
+  topic: stream.tweets
+  concurrency: 4
 
 spring:
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: localhost:29092
     consumer:
       group-id: tweets-consumer
       auto-offset-reset: earliest
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      key-deserializer: org.apache.kafka.common.serialization.LongDeserializer
+      value-deserializer: io.confluent.kafka.serializers.AbstractKafkaAvroDeserializer
 
   data:
     cassandra:
