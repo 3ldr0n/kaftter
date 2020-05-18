@@ -22,7 +22,7 @@ class KafkaTwitterProducer(
      * @param message The message to be sent.
      */
     fun sendMessage(message: Tweet) {
-        val record = ProducerRecord(TWEETS_TOPIC, message.id, message)
+        val record = ProducerRecord(TWEETS_TOPIC, message.user.id, message)
         producer.send(record) { _, exception ->
             if (nonNull(exception)) {
                 log.error("m=KafkaTwitterProducer.sendMessage, Something bad happened", exception)
