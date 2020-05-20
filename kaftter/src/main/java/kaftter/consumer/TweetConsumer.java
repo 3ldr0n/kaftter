@@ -2,6 +2,7 @@ package kaftter.consumer;
 
 import kaftter.exception.InvalidPayloadException;
 import kaftter.service.TweetService;
+import kaftter.tweet.Tweet;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
@@ -24,10 +25,10 @@ public class TweetConsumer {
      * @param message Message to be processed.
      */
     @KafkaListener(
-            topics = "${app.kafka.topic}",
+            topics = "${kafka.topic}",
             groupId = "${spring.kafka.consumer.group-id}",
             containerFactory = TWEET_CONSUMER_CONTAINER_FACTORY)
-    public void consume(final kaftter.tweet.Tweet message) {
+    public void consume(final Tweet message) {
         if (isNull(message)) {
             log.error("m=consume, status=null-message");
             throw new InvalidPayloadException("Empty message");
