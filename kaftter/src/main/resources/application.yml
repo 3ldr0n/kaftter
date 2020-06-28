@@ -1,13 +1,16 @@
 kafka:
   topic: stream.tweets
-  concurrency: 4
+
 
 spring:
   kafka:
     bootstrap-servers: localhost:29092
+    schema-registry: http://localhost:8081
     consumer:
       group-id: tweets-consumer
       auto-offset-reset: earliest
+      concurrency: 4
+      session-timeout: 15000
       key-deserializer: org.apache.kafka.common.serialization.LongDeserializer
       value-deserializer: io.confluent.kafka.serializers.AbstractKafkaAvroDeserializer
 
