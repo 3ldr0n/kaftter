@@ -1,64 +1,44 @@
 package kaftter.consumer;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import kaftter.domain.TweetEntity;
 import kaftter.exception.InvalidPayloadException;
-import kaftter.repository.TweetRepository;
-import kaftter.vo.Tweet;
+import kaftter.service.TweetService;
+import kaftter.tweet.Tweet;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-
 import static java.util.Objects.isNull;
+import static kaftter.configuration.KafkaConsumerConfiguration.TWEET_CONSUMER_CONTAINER_FACTORY;
 
-@Service
 @Slf4j
+@Service
 public class TweetConsumer {
-    private static final String TWEETS_TOPIC = "stream.tweets";
-    private static final String CONSUMER_GROUP_ID = "tweets-consumer";
-    private static final String EMPTY_PAYLOAD = "{}";
+    private final TweetService tweetService;
 
-    private final TweetRepository tweetRepository;
-
-    public TweetConsumer(final TweetRepository tweetRepository) {
-        this.tweetRepository = tweetRepository;
+    public TweetConsumer(final TweetService tweetService) {
+        this.tweetService = tweetService;
     }
 
     /**
      * Consumes messages from the stream tweets topic and saves it in the database.
      *
      * @param message Message to be processed.
-     * @throws InvalidPayloadException When an invalid payload is consumed.
      */
     @KafkaListener(
-            topics = {TWEETS_TOPIC},
-            groupId = CONSUMER_GROUP_ID)
-    public void consume(final String message) throws InvalidPayloadException {
-        if (isNull(message) || EMPTY_PAYLOAD.equals(message)) {
-            throw new InvalidPayloadException("Empty message");
+            topics = "${kafka.topic}",
+            groupId = "${spring.kafka.consumer.group-id}",
+            containerFactory = TWEET_CONSUMER_CONTAINER_FACTORY)
+    public void consume(final ConsumerRecord<Long, Tweet> message, final Acknowledgment acknowledgment) {
+        if (isNull(message) || isNull(message.value())) {
+            log.warn("m=consume, status=null-message");
+        } else {
+            tweetService.save(message.value());
+            log.info("m=TweetConsumerService.consume, " + message.value().getId());
         }
 
-        try {
-            processMessage(message);
-        } catch (final IOException e) {
-            log.error("m=TweetConsumerService.consume, Invalid message" + message);
-            throw new InvalidPayloadException("Invalid message to process");
-        }
+        acknowledgment.acknowledge();
     }
 
-    /**
-     * Process a message and saves it in the database.
-     *
-     * @param message Message to be processed.
-     * @throws IOException Error parsing the json message.
-     */
-    private void processMessage(final String message) throws IOException {
-        final var mapper = new ObjectMapper();
-        final Tweet tweet = mapper.readValue(message, Tweet.class);
-        log.info("m=TweetConsumerService.consume, " + tweet.getId());
-        final TweetEntity tweetEntity = tweet.fromValue();
-        tweetRepository.save(tweetEntity);
-    }
 }

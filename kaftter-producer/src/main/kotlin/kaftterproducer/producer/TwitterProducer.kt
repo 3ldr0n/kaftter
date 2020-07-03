@@ -1,39 +1,36 @@
 package kaftterproducer.producer
 
-import com.twitter.hbc.ClientBuilder
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.twitter.hbc.core.Client
-import com.twitter.hbc.core.Constants
-import com.twitter.hbc.core.HttpHosts
-import com.twitter.hbc.core.endpoint.StatusesFilterEndpoint
-import com.twitter.hbc.core.processor.StringDelimitedProcessor
-import com.twitter.hbc.httpclient.auth.OAuth1
+import kaftterproducer.client.TwitterClient
+import kaftterproducer.vo.TweetVO
 import org.slf4j.LoggerFactory
-import java.util.concurrent.BlockingQueue
+import java.util.Objects.nonNull
 import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.TimeUnit
 
-class TwitterProducer {
-
-    private val consumerKey = System.getenv("TWITTER_CONSUMER_KEY")
-    private val consumerSecret = System.getenv("TWITTER_CONSUMER_SECRET")
-    private val token = System.getenv("TWITTER_TOKEN")
-    private val secret = System.getenv("TWITTER_SECRET")
+class TwitterProducer(
+    private val twitterClient: TwitterClient = TwitterClient(),
+    private val kafkaProducer: KafkaTwitterProducer = KafkaTwitterProducer()
+) {
 
     private val logger = LoggerFactory.getLogger(TwitterProducer::class.java)
 
     fun run() {
         val messageQueue = LinkedBlockingQueue<String>(1000)
-        val client = createTwitterClient(messageQueue, listOf("bitcoin", "usa", "politics", "sports"))
+        val client = twitterClient.createTwitterClient(messageQueue, listOf("bitcoin", "usa", "politics", "sports"))
         client.connect()
 
-        val kafkaProducer = KafkaTwitterProducer("localhost:9092")
-        shutdownHook(client, kafkaProducer)
+        shutdownHook(client)
 
         while (!client.isDone) {
             try {
                 val message = messageQueue.poll(5, TimeUnit.SECONDS)
                 logger.info(message)
-                kafkaProducer.sendMessage(message)
+                if (nonNull(message)) {
+                    sendMessage(message!!)
+                }
             } catch (e: InterruptedException) {
                 logger.error("m=TwitterProducer.run", e)
                 client.stop()
@@ -44,44 +41,28 @@ class TwitterProducer {
     }
 
     /**
-     * Creates the client for the twitter api.
-     *
-     * @return The Twitter API client.
-     */
-    private fun createTwitterClient(
-        messageQueue: BlockingQueue<String>,
-        terms: List<String>
-    ): Client {
-        val hosts = HttpHosts(Constants.STREAM_HOST)
-        val endpoint = StatusesFilterEndpoint()
-
-        endpoint.trackTerms(terms)
-
-        val auth = OAuth1(consumerKey, consumerSecret, token, secret)
-
-        return ClientBuilder()
-            .name("Hosebird-Client-01")
-            .hosts(hosts)
-            .authentication(auth)
-            .endpoint(endpoint)
-            .processor(StringDelimitedProcessor(messageQueue))
-            .build()
-    }
-
-    /**
      * Add a shutdown hook to the producer.
      *
      * @param client Twitter client
      */
-    private fun shutdownHook(
-        client: Client,
-        kafkaProducer: KafkaTwitterProducer
-    ) {
+    private fun shutdownHook(client: Client) {
         Runtime.getRuntime().addShutdownHook(Thread {
             logger.info("m=TwitterProducer.shutdownHook, Stopping application...")
             client.stop()
-            kafkaProducer.producer.close()
+            kafkaProducer.closeProducer()
         })
+    }
+
+    /**
+     * Sends a message to kafka.
+     *
+     * @param message Message to be sent
+     */
+    private fun sendMessage(message: String) {
+        val mapper = jacksonObjectMapper()
+        val tweetVO = mapper.readValue<TweetVO>(message)
+        val tweet = tweetVO.toAvro()
+        kafkaProducer.sendMessage(tweet)
     }
 
 }

@@ -6,10 +6,18 @@
 
 Takes data from Twitter and saves it in cassandra.
 
+## Architecture
+
+![Architecture](./docs/kaftter.png)
+
 ## Local environment
 
 ```bash
 docker-compose up -d
+```
+
+```bash
+./register_schema.py http://localhost:8081 stream.tweets kaftter/src/main/avro/Tweet.avsc
 ```
 
 ### Kaftter producer

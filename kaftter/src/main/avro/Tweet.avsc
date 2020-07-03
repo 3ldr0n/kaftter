@@ -1,0 +1,77 @@
+{
+  "type": "record",
+  "name": "Tweet",
+  "namespace": "kaftter.tweet",
+  "fields": [
+    {
+      "name": "id",
+      "type": "long",
+      "doc": "Tweet id"
+    },
+    {
+      "name": "text",
+      "type": "string",
+      "doc": "Tweet text"
+    },
+    {
+      "name": "user",
+      "doc": "User information",
+      "type": {
+      "name": "User",
+         "type": "record",
+         "fields": [
+           {
+             "name": "id",
+             "type": "long",
+             "doc": "User id"
+           },
+           {
+             "name": "name",
+             "type": "string",
+             "doc": "User name"
+           },
+           {
+             "name": "screenName",
+             "type": "string",
+             "doc": "User screen name"
+           },
+           {
+             "name": "followers",
+             "type": "long",
+             "doc": "Number of followers the user has"
+           }
+         ]
+      }
+    },
+    {
+      "name": "quoteCount",
+      "type": "int",
+      "doc": "Number of quotes"
+    },
+    {
+      "name": "replyCount",
+      "type": "int",
+      "doc": "Number of replies"
+    },
+    {
+      "name": "retweetCount",
+      "type": "int",
+      "doc": "Number of retweets"
+    },
+    {
+      "name": "favoriteCount",
+      "type": "int",
+      "doc": "Number of favorites"
+    },
+    {
+      "name": "language",
+      "type": "string",
+      "doc": "Language of the tweet"
+    },
+    {
+      "name": "timestamp",
+      "type": "long",
+      "doc": "Tweet timestamp"
+    }
+  ]
+}

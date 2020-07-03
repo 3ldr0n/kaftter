@@ -1,59 +1,40 @@
 package kaftterproducer.producer
 
-import org.apache.kafka.clients.producer.Callback
+import kaftter.tweet.Tweet
+import kaftterproducer.configuration.KafkaProducerProperties
 import org.apache.kafka.clients.producer.KafkaProducer
-import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.clients.producer.ProducerRecord
-import org.apache.kafka.common.serialization.StringSerializer
 import org.slf4j.LoggerFactory
-import java.util.Properties
+import java.util.Objects.nonNull
+
+private const val TWEETS_TOPIC = "stream.tweets";
 
 class KafkaTwitterProducer(
-    private val bootstrapServers: String
+    private val kafkaProducerProperties: KafkaProducerProperties = KafkaProducerProperties(),
+    private val producer: KafkaProducer<Long, Tweet> = KafkaProducer(kafkaProducerProperties.producerProperties())
 ) {
 
-    private val logger = LoggerFactory.getLogger(KafkaTwitterProducer::class.java)
-    val producer: KafkaProducer<String, String>
-
-    init {
-        val properties = producerProperties()
-        producer = KafkaProducer(properties)
-    }
+    private val log = LoggerFactory.getLogger(KafkaTwitterProducer::class.java)
 
     /**
      * Send a message to the tweets topic.
      *
      * @param message The message to be sent.
      */
-    fun sendMessage(
-        message: String?
-    ) {
-        producer.send(ProducerRecord("stream.tweets", null, message), Callback { _, exception ->
-            if (exception != null) {
-                logger.error("m=KafkaTwitterProducer.sendMessage, Something bad happened", exception)
+    fun sendMessage(message: Tweet) {
+        val record = ProducerRecord(TWEETS_TOPIC, message.user.id, message)
+        producer.send(record) { _, exception ->
+            if (nonNull(exception)) {
+                log.error("m=KafkaTwitterProducer.sendMessage, Something bad happened", exception)
             }
-        })
+        }
     }
 
     /**
-     * Kafka Producer properties setup.
-     *
-     * @return Producer properties.
+     * Closes the producer.
      */
-    private fun producerProperties(): Properties {
-        val properties = Properties()
-
-        properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers)
-        properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer::class.java.name)
-        properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer::class.java.name)
-        properties.setProperty(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, "false")
-        properties.setProperty(ProducerConfig.ACKS_CONFIG, "0")
-        properties.setProperty(ProducerConfig.RETRIES_CONFIG, Int.MAX_VALUE.toString())
-        properties.setProperty(ProducerConfig.MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION, "5")
-        properties.setProperty(ProducerConfig.COMPRESSION_TYPE_CONFIG, "snappy")
-        properties.setProperty(ProducerConfig.BATCH_SIZE_CONFIG, (32 * 1024).toString())
-        properties.setProperty(ProducerConfig.LINGER_MS_CONFIG, "20")
-
-        return properties
+    fun closeProducer() {
+        producer.close();
     }
+
 }
