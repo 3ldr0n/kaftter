@@ -58,6 +58,6 @@ services:
     restart: always
     volumes:
       - ./cassandra_data:/var/lib/cassandra
-      - "./cassandra-init.sh:/cassandra-init.sh"
-    command: "sh /cassandra-init.sh"
+      - "./deploy/local/scripts/cassandra/create-keyspace.sh:/create-keypace.sh"
+    command: "sh /create-keyspace.sh"
 
