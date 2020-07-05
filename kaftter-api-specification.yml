@@ -1,0 +1,126 @@
+openapi: 3.0.1
+info:
+  title: Kaftter API
+  description: API for registering tweets and fetching summarized user information
+  contact:
+    email: ednetoali@gmail.com
+  version: "1.0"
+externalDocs:
+  description: Kaftter
+  url: http://github.com/3ldr0n/kaftter
+servers:
+- url: /
+tags:
+- name: Tweet
+  description: Kaftter information for tweets
+  externalDocs:
+    description: Find out more
+    url: http://github.com/3ldr0n/kaftter
+paths:
+  /tweets:
+    put:
+      tags:
+      - tweet
+      summary: Registers or updates a tweet
+      operationId: updateTweet
+      requestBody:
+        description: Tweet object that needs to be registered or updated
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Tweet'
+        required: true
+      responses:
+        204:
+          description: "Tweet was created or updated succesfully"
+        400:
+          description: Invalid input
+      x-codegen-request-body-name: body
+  /tweets/{userId}:
+    get:
+      tags:
+      - tweet
+      summary: Fetches tweet information from user
+      operationId: fetchTweets
+      parameters:
+      - name: userId
+        in: path
+        description: The user id
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          $ref: '#/components/schemas/TweetSet'
+        404:
+          description: User not found
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: User id
+          format: int64
+        name:
+          type: string
+          description: User name
+        screenName:
+          type: string
+          description: User screen name
+        followers:
+          type: integer
+          description: Number of followers the user has
+          format: int64
+    Tweet:
+      required:
+      - id
+      - text
+      - user
+      - quoteCount
+      - replyCount
+      - retweetCount
+      - favoriteCount
+      - language
+      - timestamp
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Tweet id
+        text:
+          type: string
+          description: Tweet content
+        user:
+          $ref: '#/components/schemas/User'
+        quoteCount:
+          type: integer
+          format: int64
+          description: Numer of quotes the tweet received
+        replyCount:
+          type: integer
+          format: int64
+          description: Numer of replies the tweet received
+        retweetCount:
+          type: integer
+          format: int64
+          description: Numer of retweets the tweet received
+        favoriteCount:
+          type: integer
+          format: int64
+          description: Numer of favorites the tweet received
+        language:
+          type: string
+          description: Language the tweet was published
+        timestamp:
+          type: string
+          format: date-time
+          description: Date the tweet was published
+    TweetSet:
+      type: object
+      properties:
+        tweets:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
