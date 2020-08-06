@@ -18,5 +18,5 @@ public class User {
     @JsonProperty("screen_name")
     private String screenName;
     @JsonProperty("followers_count")
-    private Long followers;
+    private int followers;
 }

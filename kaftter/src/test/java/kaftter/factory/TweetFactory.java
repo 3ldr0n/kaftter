@@ -41,7 +41,7 @@ public class TweetFactory {
                                                 .id(longIds.getAndIncrement())
                                                 .name("test user")
                                                 .screenName("test_user")
-                                                .followers(longIds.getAndIncrement())
+                                                .followers(intIds.getAndIncrement())
                                                 .build())
                                         .quoteCount(intIds.getAndIncrement())
                                         .replyCount(intIds.getAndIncrement())

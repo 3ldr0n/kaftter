@@ -16,7 +16,7 @@ public class TweetTest {
                         .id(1L)
                         .name("test user")
                         .screenName("test_user")
-                        .followers(10L)
+                        .followers(10)
                         .build())
                 .quoteCount(2)
                 .replyCount(3)
