@@ -48,7 +48,7 @@ public class TweetEntity implements Serializable {
     private String userScreenName;
 
     @Column("user_followers_count")
-    private Long userFollowers;
+    private int userFollowers;
 
     public Tweet toValue() {
         final var user = new User(userId, userName, userScreenName, userFollowers);

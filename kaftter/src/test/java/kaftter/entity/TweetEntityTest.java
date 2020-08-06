@@ -17,7 +17,7 @@ public class TweetEntityTest {
     @Test
     public void entityToVo() {
         final String userName = "userName";
-        final long userFollowers = 10L;
+        final int userFollowers = 10;
         final String userScreenName = "userScreenName";
         final long userId = 1L;
         final String language = "en";

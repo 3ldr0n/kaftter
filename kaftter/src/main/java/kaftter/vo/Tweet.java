@@ -72,7 +72,7 @@ public class Tweet {
         list.add(user.getId().toString());
         list.add(user.getName());
         list.add(user.getScreenName());
-        list.add(user.getFollowers().toString());
+        list.add(String.valueOf(user.getFollowers()));
         return list;
     }
 }

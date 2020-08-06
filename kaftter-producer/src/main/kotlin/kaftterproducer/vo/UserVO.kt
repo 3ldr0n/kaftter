@@ -11,7 +11,7 @@ data class UserVO(
     @JsonProperty("screen_name")
     private val screenName: String,
     @JsonProperty("followers_count")
-    private val followers: Long
+    private val followers: Int
 ) {
     fun toAvro(): User {
         return User(id, name, screenName, followers)
