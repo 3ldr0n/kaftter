@@ -1,0 +1,6 @@
+spring:
+  cassandra:
+    keyspace-name: kaftter
+    schema-action: CREATE_IF_NOT_EXISTS
+    contact-points: localhost
+    port: 9142
