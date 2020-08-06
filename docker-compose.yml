@@ -55,9 +55,7 @@ services:
       - "HEAP_NEWSIZE=128M"
       - "CASSANDRA_USER=cassandra"
       - "CASSANDRA_PASSWORD=cassandra"
-    restart: always
     volumes:
-      - ./cassandra_data:/var/lib/cassandra
-      - "./deploy/local/scripts/cassandra/create-keyspace.sh:/create-keypace.sh"
+      - "./deploy/local/scripts/cassandra/create-keyspace.sh:/create-keyspace.sh"
     command: "sh /create-keyspace.sh"
 
