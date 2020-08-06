@@ -51,12 +51,17 @@ paths:
           type: integer
       responses:
         200:
-          $ref: '#/components/schemas/TweetSet'
+          $ref: '#/components/schemas/TweetSummary'
         404:
           description: User not found
 components:
   schemas:
     User:
+      required:
+      - id
+      - name
+      - screenName
+      - followers
       type: object
       properties:
         id:
@@ -72,7 +77,6 @@ components:
         followers:
           type: integer
           description: Number of followers the user has
-          format: int64
     Tweet:
       required:
       - id
@@ -83,11 +87,12 @@ components:
       - retweetCount
       - favoriteCount
       - language
-      - timestamp
+      - createdAt
       type: object
       properties:
         id:
           type: integer
+          format: int64
           description: Tweet id
         text:
           type: string
@@ -96,31 +101,49 @@ components:
           $ref: '#/components/schemas/User'
         quoteCount:
           type: integer
-          format: int64
           description: Numer of quotes the tweet received
         replyCount:
           type: integer
-          format: int64
           description: Numer of replies the tweet received
         retweetCount:
           type: integer
-          format: int64
           description: Numer of retweets the tweet received
         favoriteCount:
           type: integer
-          format: int64
           description: Numer of favorites the tweet received
         language:
           type: string
           description: Language the tweet was published
-        timestamp:
+        createdAt:
           type: string
           format: date-time
           description: Date the tweet was published
-    TweetSet:
+    TweetSummary:
+      required:
+      - userId
+      - userName
+      - quoteCount
+      - replyCount
+      - retweetCount
+      - favoriteCount
       type: object
       properties:
-        tweets:
-          type: array
-          items:
-            $ref: '#/components/schemas/User'
+        userId:
+          type: integer
+          description: User id
+          format: int64
+        userName:
+          type: string
+          description: User name
+        quoteCount:
+          type: integer
+          description: Numer of quotes the user has received on tweets
+        replyCount:
+          type: integer
+          description: Numer of replies the user has received on tweets
+        retweetCount:
+          type: integer
+          description: Numer of retweets the user has received on tweets
+        favoriteCount:
+          type: integer
+          description: Numer of favorites the user has received on tweets
