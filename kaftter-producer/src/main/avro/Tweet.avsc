@@ -37,7 +37,7 @@
            },
            {
              "name": "followers",
-             "type": "long",
+             "type": "int",
              "doc": "Number of followers the user has"
            }
          ]
