@@ -16,12 +16,12 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.data.cassandra.CassandraUnauthorizedException
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
-import org.springframework.test.web.servlet.post
 import org.springframework.test.web.servlet.put
-import java.time.LocalDateTime
+import java.time.LocalDate
 
 @WebMvcTest
 @ExtendWith(MockKExtension::class)
@@ -70,6 +70,57 @@ class TweetResourceTest {
         assertThat(result.response.errorMessage).isNull()
         assertThat(result.response.contentAsString).isEmpty()
         verify { tweetService.search(userId) }
+    }
+
+    @Test
+    fun `test register tweet should save tweet`() {
+        val tweet = mockTweet()
+        every { tweetService.save(any()) } returns Unit
+        val result = mockMvc.put("/tweets") {
+            contentType = MediaType.APPLICATION_JSON
+            content = jacksonObjectMapper().writeValueAsString(tweet)
+        }.andExpect {
+            status { isOk }
+        }.andReturn()
+
+        assertThat(result.response.errorMessage).isNull()
+
+        verify { tweetService.save(any()) }
+    }
+
+    @Test
+    fun `test register tweet with exception writing to database should return internal server error`() {
+        val tweet = mockTweet()
+        every { tweetService.save(any()) } throws CassandraUnauthorizedException("", Exception())
+        val result = mockMvc.put("/tweets") {
+            contentType = MediaType.APPLICATION_JSON
+            content = jacksonObjectMapper().writeValueAsString(tweet)
+        }.andExpect {
+            status { isInternalServerError }
+        }.andReturn()
+
+        assertThat(result.response.errorMessage).isNull()
+
+        verify { tweetService.save(any()) }
+    }
+
+    private fun mockTweet(): Tweet {
+        return Tweet(
+                id = 1L,
+                text = "test",
+                favoriteCount = 1,
+                replyCount = 1,
+                quoteCount = 2,
+                retweetCount = 0,
+                language = "en",
+                createdAt = LocalDate.now(),
+                user = User(
+                        id = 2,
+                        followers = 0,
+                        name = "none",
+                        screenName = "none"
+                )
+        )
     }
 
 }

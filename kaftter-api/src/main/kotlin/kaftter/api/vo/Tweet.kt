@@ -1,7 +1,11 @@
 package kaftter.api.vo
 
 import com.fasterxml.jackson.annotation.JsonFormat
-import java.time.LocalDateTime
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer
+import java.time.LocalDate
 
 data class Tweet(
         val id: Long,
@@ -12,6 +16,8 @@ data class Tweet(
         val retweetCount: Int,
         val favoriteCount: Int,
         val language: String,
-        @get:JsonFormat(pattern = "YYYY-MM-DDThh:mm:ss")
-        val createdAt: LocalDateTime
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        @JsonDeserialize(using = LocalDateDeserializer::class)
+        @JsonSerialize(using = LocalDateSerializer::class)
+        val createdAt: LocalDate
 )

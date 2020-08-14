@@ -16,7 +16,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
-import java.time.LocalDateTime
+import java.time.LocalDate
 import java.util.Optional
 
 @ExtendWith(MockKExtension::class)
@@ -53,13 +53,18 @@ class TweetServiceTest {
     @Test
     fun `test searching for tweet summary of existing user should return user summary`() {
         val userId = 1L
-        val summarizedTweetEntity = mockk<SummarizedTweetEntity>()
+        val summarizedTweetEntity = mockSummarizedTweetEntity(userId)
         every { summarizedTweetRepository.findByUserId(userId) } returns Optional.of(summarizedTweetEntity)
 
         val tweetSummary = tweetService.search(userId)
 
         verify { summarizedTweetRepository.findByUserId(userId) }
-        assertThat(tweetSummary).isEqualTo(summarizedTweetEntity)
+        assertThat(tweetSummary.userId).isEqualTo(summarizedTweetEntity.userId)
+        assertThat(tweetSummary.userName).isEqualTo(summarizedTweetEntity.userName)
+        assertThat(tweetSummary.favoriteCount).isEqualTo(summarizedTweetEntity.favoriteCount)
+        assertThat(tweetSummary.quoteCount).isEqualTo(summarizedTweetEntity.quoteCount)
+        assertThat(tweetSummary.replyCount).isEqualTo(summarizedTweetEntity.replyCount)
+        assertThat(tweetSummary.retweetCount).isEqualTo(summarizedTweetEntity.retweetCount)
     }
 
     private fun mockTweet(): Tweet {
@@ -71,13 +76,24 @@ class TweetServiceTest {
                 quoteCount = 2,
                 retweetCount = 0,
                 language = "en",
-                createdAt = LocalDateTime.now(),
+                createdAt = LocalDate.now(),
                 user = User(
                         id = 2,
                         followers = 0,
                         name = "none",
                         screenName = "none"
                 )
+        )
+    }
+
+    private fun mockSummarizedTweetEntity(userId: Long): SummarizedTweetEntity {
+        return SummarizedTweetEntity(
+                userId = userId,
+                userName = "john",
+                retweetCount = 0,
+                replyCount = 0,
+                quoteCount = 0,
+                favoriteCount = 0
         )
     }
 }
