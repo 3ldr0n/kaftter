@@ -3,7 +3,6 @@ package kaftter.api.domain
 import org.springframework.data.cassandra.core.mapping.Column
 import org.springframework.data.cassandra.core.mapping.PrimaryKey
 import org.springframework.data.cassandra.core.mapping.Table
-import java.time.LocalDateTime
 
 const val TWEETS = "tweets"
 
@@ -30,9 +29,6 @@ data class TweetEntity(
 
         @Column("language")
         val language: String,
-
-        @Column("created_at")
-        val createdAt: LocalDateTime,
 
         @Column("user_name")
         val userName: String,

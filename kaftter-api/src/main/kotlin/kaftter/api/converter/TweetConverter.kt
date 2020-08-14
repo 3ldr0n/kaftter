@@ -18,7 +18,11 @@ fun convert(summarizedTweetEntity: SummarizedTweetEntity): TweetSummary {
 }
 
 fun convert(tweet: Tweet): TweetEntity {
-    val tweetKey = TweetKey(tweet.id, tweet.user.id)
+    val tweetKey = TweetKey(
+            tweetId = tweet.id,
+            userId = tweet.user.id,
+            createdAt = tweet.createdAt
+    )
     return TweetEntity(
             key = tweetKey,
             text = tweet.text,
@@ -27,7 +31,6 @@ fun convert(tweet: Tweet): TweetEntity {
             retweetCount = tweet.retweetCount,
             favoriteCount = tweet.favoriteCount,
             language = tweet.language,
-            createdAt = tweet.createdAt,
             userName = tweet.user.name,
             userScreenName = tweet.user.screenName,
             userFollowers = tweet.user.followers
