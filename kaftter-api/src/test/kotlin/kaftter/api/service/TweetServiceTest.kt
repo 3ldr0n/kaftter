@@ -43,7 +43,7 @@ class TweetServiceTest {
     @Test
     fun `test searching for tweet summary of non existing user should throw not found exception`() {
         val userId = 1L
-        every { summarizedTweetRepository.findByUserId(userId) } returns Optional.empty()
+        every { summarizedTweetRepository.findByUserId(userId) } returns null
 
         assertThrows<UserNotFoundException> { tweetService.search(userId) }
 
@@ -54,7 +54,7 @@ class TweetServiceTest {
     fun `test searching for tweet summary of existing user should return user summary`() {
         val userId = 1L
         val summarizedTweetEntity = mockSummarizedTweetEntity(userId)
-        every { summarizedTweetRepository.findByUserId(userId) } returns Optional.of(summarizedTweetEntity)
+        every { summarizedTweetRepository.findByUserId(userId) } returns summarizedTweetEntity
 
         val tweetSummary = tweetService.search(userId)
 
