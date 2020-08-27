@@ -19,10 +19,10 @@ class TweetService(
 
     fun search(userId: Long): TweetSummary {
         val summarizedTweet = summarizedTweetRepository.findByUserId(userId)
-        if (summarizedTweet.isEmpty) {
-            throw UserNotFoundException(userId)
+        summarizedTweet?.let {
+            return convert(it)
         }
-        return convert(summarizedTweet.get())
+        throw UserNotFoundException(userId)
     }
 
 }
