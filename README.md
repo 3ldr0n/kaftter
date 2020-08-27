@@ -35,3 +35,12 @@ cd kaftter
 docker build -t kaftter/kaftter:1.0 .
 docker run -d --name kaftter kaftter/kaftter:1.0
 ```
+
+### Kaftter API
+
+```bash
+cd kaftter-api
+./gradlew clean build
+docker build -t kaftter/kaftter-api:1.0 .
+docker run -d --name kaftter-api kaftter/kaftter-api:1.0
+```
