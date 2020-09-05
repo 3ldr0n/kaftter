@@ -6,7 +6,6 @@ import com.twitter.hbc.core.Client
 import kaftterproducer.client.TwitterClient
 import kaftterproducer.vo.TweetVO
 import org.slf4j.LoggerFactory
-import java.util.Objects.nonNull
 import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.TimeUnit
 
@@ -28,8 +27,8 @@ class TwitterProducer(
             try {
                 val message = messageQueue.poll(5, TimeUnit.SECONDS)
                 logger.info(message)
-                if (nonNull(message)) {
-                    sendMessage(message!!)
+                message?.let {
+                    sendMessage(it)
                 }
             } catch (e: InterruptedException) {
                 logger.error("m=TwitterProducer.run", e)

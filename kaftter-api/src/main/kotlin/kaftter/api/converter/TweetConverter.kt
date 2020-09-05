@@ -5,6 +5,7 @@ import kaftter.api.domain.TweetEntity
 import kaftter.api.domain.TweetKey
 import kaftter.api.vo.Tweet
 import kaftter.api.vo.TweetSummary
+import java.time.LocalDate
 
 fun convert(summarizedTweetEntity: SummarizedTweetEntity): TweetSummary {
     return TweetSummary(
@@ -21,7 +22,7 @@ fun convert(tweet: Tweet): TweetEntity {
     val tweetKey = TweetKey(
             tweetId = tweet.id,
             userId = tweet.user.id,
-            createdAt = tweet.createdAt
+            createdAt = LocalDate.now()
     )
     return TweetEntity(
             key = tweetKey,
