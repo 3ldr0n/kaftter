@@ -1,0 +1,58 @@
+server:
+  port: 8079
+
+kafka:
+  topic: stream.tweets
+
+kaftter-api:
+  url: http://localhost:8080/tweets
+  timeout: 2
+
+spring:
+  kafka:
+    bootstrap-servers: localhost:29092
+    schema-registry: http://localhost:8081
+    consumer:
+      group-id: tweets-consumer
+      auto-offset-reset: earliest
+      concurrency: 4
+      session-timeout: 15000
+
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+
+resilience4j.circuitbreaker:
+  instances:
+    kaftter-api:
+      registerHealthIndicator: true
+      slidingWindowSize: 10
+      permittedNumberOfCallsInHalfOpenState: 2
+      slidingWindowType: TIME_BASED
+      minimumNumberOfCalls: 10
+      waitDurationInOpenState: 50s
+      failureRateThreshold: 20
+      recordExceptions:
+        - java.io.IOException
+      ignoreExceptions:
+        - kaftter.consumer.exception.ClientException
+
+
+resilience4j.retry:
+  instances:
+    kaftter-api:
+      maxRetryAttempts: 2
+      waitDuration: 10s
+      enableExponentialBackoff: true
+      exponentialBackoffMultiplier: 2
+      retryExceptions:
+        - java.io.IOException
+      ignoreExceptions:
+        - kaftter.consumer.exception.ClientException
+
+resilience4j.timelimiter:
+  instances:
+    kaftter-api:
+      timeoutDuration: 2s
+      cancelRunningFuture: true

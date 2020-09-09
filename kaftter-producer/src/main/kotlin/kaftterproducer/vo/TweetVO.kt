@@ -18,15 +18,13 @@ data class TweetVO(
     @JsonProperty("favorite_count")
     private val favoriteCount: Int = 0,
     @JsonProperty("lang")
-    private val language: String,
-    @JsonProperty("timestamp_ms")
-    private val timestamp: Long
+    private val language: String
 ) {
     fun toAvro(): Tweet {
         val user = this.user.toAvro()
         return Tweet(
             id, text, user, quoteCount, replyCount,
-            retweetCount, favoriteCount, language, timestamp
+            retweetCount, favoriteCount, language
         )
     }
 }

@@ -21,7 +21,6 @@ import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.put
-import java.time.LocalDate
 
 @WebMvcTest
 @ExtendWith(MockKExtension::class)
@@ -113,7 +112,6 @@ class TweetResourceTest {
                 quoteCount = 2,
                 retweetCount = 0,
                 language = "en",
-                createdAt = LocalDate.now(),
                 user = User(
                         id = 2,
                         followers = 0,

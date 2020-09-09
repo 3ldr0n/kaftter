@@ -4,9 +4,5 @@ jdk:
   - openjdk11
 
 script:
-  - cd kaftter
-  - ./gradlew clean --info --stacktrace
-  - ./gradlew build test --info --stacktrace
-  - cd ../kaftter-api
-  - ./gradlew clean --info --stacktrace
-  - ./gradlew build test --info --stacktrace
+  - cd kaftter-consumer && ./gradlew clean build test --info --stacktrace && cd ..
+  - cd kaftter-api && ./gradlew clean build test --info --stacktrace && cd ..
