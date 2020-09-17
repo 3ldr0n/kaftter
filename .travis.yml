@@ -1,8 +1,28 @@
-language: java
-
-jdk:
-  - openjdk11
-
-script:
-  - cd kaftter-consumer && ./gradlew clean build test --info --stacktrace && cd ..
-  - cd kaftter-api && ./gradlew clean build test --info --stacktrace && cd ..
+matrix:
+  include:
+    - language: java
+      jdk:
+        - openjdk11
+      script:
+        - cd kaftter-api
+        - ./gradlew clean
+        - ./gradlew build -x test
+        - ./gradlew test
+    - language: java
+      jdk:
+        - openjdk11
+      script:
+        - cd kaftter-consumer
+        - ./gradlew clean
+        - ./gradlew build -x test
+        - ./gradlew test
+    - language: scala
+      jdk:
+        - oraclejdk8
+      scala:
+        - 2.12.10
+      script:
+        - cd tweet-summarizer
+        - sbt clean
+        - sbt package
+        - sbt test
