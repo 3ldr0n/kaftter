@@ -3,16 +3,18 @@ matrix:
     - language: java
       jdk:
         - openjdk11
-      script:
+      before_script:
         - cd kaftter-api
+      script:
         - ./gradlew clean
         - ./gradlew build -x test
         - ./gradlew test
     - language: java
       jdk:
         - openjdk11
-      script:
+      before_script:
         - cd kaftter-consumer
+      script:
         - ./gradlew clean
         - ./gradlew build -x test
         - ./gradlew test
@@ -21,8 +23,9 @@ matrix:
         - oraclejdk8
       scala:
         - 2.12.10
-      script:
+      before_script:
         - cd tweet-summarizer
+      script:
         - sbt clean
         - sbt package
         - sbt test
