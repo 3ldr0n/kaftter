@@ -20,12 +20,12 @@ matrix:
         - ./gradlew test
     - language: scala
       jdk:
-        - oraclejdk8
+        - openjdk11
       scala:
         - 2.12.10
       before_script:
         - cd tweet-summarizer
       script:
-        - sbt clean
-        - sbt package
-        - sbt test
+        - sbt ++$TRAVIS_SCALA_VERSION clean
+        - sbt ++$TRAVIS_SCALA_VERSION package
+        - sbt ++$TRAVIS_SCALA_VERSION test
