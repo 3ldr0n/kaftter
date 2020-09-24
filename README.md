@@ -3,13 +3,13 @@
 [![Build Status](https://travis-ci.com/eaneto/kaftter.svg?branch=master)](https://travis-ci.com/eaneto/kaftter)
 
 An overengineered architecture to produce a summary about the tweets
-of some users. The idea is to produce tweet events of some specifics
-hashtags. These events are consumed, saved in cassandra and summarized
-by a spark job.
+of some users. The idea is to produce tweet events of some hashtags.
+These events are consumed, saved in Cassandra and summarized by
+a spark job.
 
 This is really is a much more complicated than it should be, but the
-idea *is not* to make something simple, it's actually just made to
-learn some specifics technologies.
+goal *is not* to make something simple, it's actually just made to
+learn some technologies.
 
 ## Architecture
 
