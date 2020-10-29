@@ -7,7 +7,7 @@ of some users. The idea is to produce tweet events of some hashtags.
 These events are consumed, saved in Cassandra and summarized by
 a spark job.
 
-This is really is a much more complicated than it should be, but the
+This really is much more complicated than it should be, but the
 goal *is not* to make something simple, it's actually just made to
 learn some technologies.
 
