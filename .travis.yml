@@ -2,8 +2,7 @@ addons:
   sonarcloud:
     organization: 3ldr0n
     token:
-      secure: $SONAR_KEY
-
+      secure: "$SONAR_KEY"
 matrix:
   include:
   - language: java
@@ -12,22 +11,22 @@ matrix:
     before_script:
     - cd kaftter-api
     script:
-    - ./gradlew clean
-    - ./gradlew build -x test
-    - ./gradlew test
-    - ./gradlew jacocoTestReport
-    - ./gradlew sonarqube -Dsonar.login=$SONAR_KEY
+    - "./gradlew clean"
+    - "./gradlew build -x test"
+    - "./gradlew test"
+    - "./gradlew jacocoTestReport"
+    - "./gradlew sonarqube -Dsonar.login=$SONAR_KEY"
   - language: java
     jdk:
     - openjdk11
     before_script:
     - cd kaftter-consumer
     script:
-    - ./gradlew clean
-    - ./gradlew build -x test
-    - ./gradlew test
-    - ./gradlew jacocoTestReport
-    - ./gradlew sonarqube -Dsonar.login=$SONAR_KEY
+    - "./gradlew clean"
+    - "./gradlew build -x test"
+    - "./gradlew test"
+    - "./gradlew jacocoTestReport"
+    - "./gradlew sonarqube -Dsonar.login=$SONAR_KEY"
   - language: scala
     jdk:
     - openjdk11
@@ -39,3 +38,6 @@ matrix:
     - sbt ++$TRAVIS_SCALA_VERSION clean
     - sbt ++$TRAVIS_SCALA_VERSION package
     - sbt ++$TRAVIS_SCALA_VERSION test
+env:
+  global:
+    secure: WserJHmcCophsc2YVmUuqytRFUV3Wxznbjb6MdqEBohhMr709eNOSOVarvVXSv32Prqxb8sb+HTG59liIra/F6n237w8f8wvEml8r1vsiW7Nl1o97lvAGyZ0B/Nke0sjaOh8eRUcSdVv4VLKzBSB3aI8vRfJg+V59RgfTWvfJT6XkKRFBDshNFc6I3R5NUJHJx/buNtSbXy3zB1B1mA8m/p+RlVyHyCSbLdrVKj6Yxeh2sWmON9dQmNv7DGRVpjvwlVagN04yJPjCGLpaSemvMu1h3/zLdPT/gaQcbXIfyCNKaY62ERv9QhnRJCKwijoSHrYjKCDnjRXQFqFoT/dngDtywTTR2TG9X1qmTOll1Po2ls9XQVZ5l1IQkn1HiMyu9Ysh71uPQ/LqiNgFWGsNk/iK0WRGmAU+B6MarqX/9DzCrPSluiXQu8ONoA3+YtVKJbagAUuP8HIdrJiD6S14lVLjv7VAXVrBcV4ma3YhaQ/sygizaX4jrRwZX1WjBe4V3vySJMqeoCTZ8MKhBvaRHJV9EC6cRZcAYw1j387939YMvPC/+b/rple5nH3tzA+NL3TW8PPGgmb60m/vqf0PXCjfmBJwPx/HUFAif9y0742zlDsxNGhsSgifxK2bRlVj6vgBzFKewKOD321WQwlJoqywRWqsZVS6DTTClwGeY4=
