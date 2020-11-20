@@ -15,7 +15,7 @@ matrix:
     - "./gradlew build -x test"
     - "./gradlew test"
     - "./gradlew jacocoTestReport --info"
-    - "./gradlew sonarqube -Dsonar.login=$SHORTY_SONAR --info --stacktrace"
+    - "./gradlew sonarqube -Dsonar.login=$SONAR_KEY --info --stacktrace"
   - language: java
     jdk:
     - openjdk11
@@ -26,7 +26,7 @@ matrix:
     - "./gradlew build -x test"
     - "./gradlew test"
     - "./gradlew jacocoTestReport --info"
-    - "./gradlew sonarqube -Dsonar.login=$SHORTY_SONAR --info --stacktrace"
+    - "./gradlew sonarqube -Dsonar.login=$SONAR_KEY --info --stacktrace"
   - language: scala
     jdk:
     - openjdk11
