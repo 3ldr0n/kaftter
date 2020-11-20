@@ -27,7 +27,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-public class TweetIntegrationTest {
+class TweetIntegrationTest {
     private static final String KAFTTER_URL = "http://api.kaftter.com";
 
     @MockBean
@@ -37,7 +37,7 @@ public class TweetIntegrationTest {
     private TweetConsumer tweetConsumer;
 
     @Test
-    public void test_success() throws IOException {
+    void test_success() throws IOException {
         final var tweetEvent = TweetFactory.mockTweetEvent();
         final var consumerRecord = new ConsumerRecord<>("stream.tweets", 0, 1, tweetEvent.getUser().getId(), tweetEvent);
         final var acknowledgment = mock(Acknowledgment.class);
@@ -50,7 +50,7 @@ public class TweetIntegrationTest {
     }
 
     @Test
-    public void test_client_error_on_api_call_should_throw_exception_and_not_acknowledge() throws IOException {
+    void test_client_error_on_api_call_should_throw_exception_and_not_acknowledge() throws IOException {
         final var tweetEvent = TweetFactory.mockTweetEvent();
         final var consumerRecord = new ConsumerRecord<>("stream.tweets", 0, 1, tweetEvent.getUser().getId(), tweetEvent);
         final var acknowledgment = mock(Acknowledgment.class);
@@ -65,7 +65,7 @@ public class TweetIntegrationTest {
     }
 
     @Test
-    public void test_internal_server_error_on_api_call_should_throw_exception_and_not_acknowledge() throws IOException {
+    void test_internal_server_error_on_api_call_should_throw_exception_and_not_acknowledge() throws IOException {
         final var tweetEvent = TweetFactory.mockTweetEvent();
         final var consumerRecord = new ConsumerRecord<>("stream.tweets", 0, 1, tweetEvent.getUser().getId(), tweetEvent);
         final var acknowledgment = mock(Acknowledgment.class);
@@ -80,7 +80,7 @@ public class TweetIntegrationTest {
     }
 
     @Test
-    public void test_network_error_on_api_call_should_throw_exception_and_not_acknowledge() throws IOException {
+    void test_network_error_on_api_call_should_throw_exception_and_not_acknowledge() throws IOException {
         final var tweetEvent = TweetFactory.mockTweetEvent();
         final var consumerRecord = new ConsumerRecord<>("stream.tweets", 0, 1, tweetEvent.getUser().getId(), tweetEvent);
         final var acknowledgment = mock(Acknowledgment.class);
