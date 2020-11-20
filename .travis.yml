@@ -1,45 +1,43 @@
 addons:
   sonarcloud:
-    organization: "3ldr0n"
+    organization: 3ldr0n
     token:
-      secure: $SHORTY_SONAR
-
+      secure: "$SONAR_KEY"
 matrix:
   include:
-    - language: java
-      jdk:
-        - openjdk11
-      before_script:
-        - cd kaftter-api
-      script:
-        - ./gradlew clean
-        - ./gradlew build -x test
-        - ./gradlew test
-        - ./gradlew jacocoTestReport --info
-        - ./gradlew sonarqube -Dsonar.login=$SHORTY_SONAR --info --stacktrace
-    - language: java
-      jdk:
-        - openjdk11
-      before_script:
-        - cd kaftter-consumer
-      script:
-        - ./gradlew clean
-        - ./gradlew build -x test
-        - ./gradlew test
-        - ./gradlew jacocoTestReport --info
-        - ./gradlew sonarqube -Dsonar.login=$SHORTY_SONAR --info --stacktrace
-    - language: scala
-      jdk:
-        - openjdk11
-      scala:
-        - 2.12.10
-      before_script:
-        - cd tweet-summarizer
-      script:
-        - sbt ++$TRAVIS_SCALA_VERSION clean
-        - sbt ++$TRAVIS_SCALA_VERSION package
-        - sbt ++$TRAVIS_SCALA_VERSION test
-
+  - language: java
+    jdk:
+    - openjdk11
+    before_script:
+    - cd kaftter-api
+    script:
+    - "./gradlew clean"
+    - "./gradlew build -x test"
+    - "./gradlew test"
+    - "./gradlew jacocoTestReport --info"
+    - "./gradlew sonarqube -Dsonar.login=$SHORTY_SONAR --info --stacktrace"
+  - language: java
+    jdk:
+    - openjdk11
+    before_script:
+    - cd kaftter-consumer
+    script:
+    - "./gradlew clean"
+    - "./gradlew build -x test"
+    - "./gradlew test"
+    - "./gradlew jacocoTestReport --info"
+    - "./gradlew sonarqube -Dsonar.login=$SHORTY_SONAR --info --stacktrace"
+  - language: scala
+    jdk:
+    - openjdk11
+    scala:
+    - 2.12.10
+    before_script:
+    - cd tweet-summarizer
+    script:
+    - sbt ++$TRAVIS_SCALA_VERSION clean
+    - sbt ++$TRAVIS_SCALA_VERSION package
+    - sbt ++$TRAVIS_SCALA_VERSION test
 env:
   global:
-    secure: Yxv9D6Lhjmu2lGNIsxmmMuVFDXq93ETKcA3d9KKnT+wgN+MpYz9BUiYaisv263Ptrh3WPW3E1P+iBAzZcRzpRQ1GMI6EXT0DXZRGa4acDMN/oVHdY8nFrciIJK/5QpwpS6Zke291ytOqNNB2OvCDFXQxOvfgAF2p0Iyz8vKYaWtwtITjGfIKHYNIbC5sUnA/neDRDYFmDTcKnOukOzeBoR+UqsOCYf315GeVqndjulWA2i6XYiD9qnVJaSzr0sqvrmzSEg0Sz4+kl46zRgzYfTwFg/48GTaiCRuFsGGo+VpN166s1IAcPV2wCxhsQh5gS6iyPGY+A5aLwYBqpO0nPvmiYx0D4bvhuNv1wGacxAYCADHPcNB/cIVTJBd/WLuvB4GGNZhmi0aWOD5Tq/t9YD9y8x10BdaGCjBTwS5NxFXtWpD7ByukzNOxFs1dedljXs5AJ79zwhu2m96xjtvpeBkpXm/q4cm3OvIr0cMwVOW37ePjGA0XjjVBUuJFIPYMPISSkfy+NWMdztndonGREMEhHFioIFP47kF0MyLv5xj8x+Br12a+ETN09YVeWk/3CzVdx3FnS71POePUQm441r4jdjtSnW0WPCjyMgEHPEfBQ3auO+vS17EJmWlEAj/brReJQ2YD+v+eyK0xuSI/aZURjoYxAbrfVGckC4gvJHs=
+  - secure: SVVPko3osBF9137BfBkEr1OWsg4vg7KmMajbOBdanwaBVaC13jf4OC11qa/IElla4KjTXEgItrRqN1eXpslmMx5y/YjCAfrsmSZHfAC0+MLkqYDJZ8xuanFoLqqJJ+ndOeDYfG64S2YIULwCmVvzOCHFODSKC8ZSQbk4lgnODjMbusoOK+Qao5Yr0BGEPF3Y61LwuD40XiZ2drDiMv513dL8pTMxHIPjLED8Jev72dO8NdBmKtEmENtLZb0vnt6fQF8fl2zx4TMj3UW+TtnBy8eXXsF/H9dFH+qTqTrQX6RhlFMaDjDabmxcQ9hoZiFQdC7a3Zh6GdQRQdteTIYhCNf5AcRm3kHysLHOOMDKncr9rDJO4eyK+L644Q0RVDPir5hq9g3UBjDSdWl6NzY2BVKtfRmBV1i1z7/enL4N1D7yD30wl0vkkJevaP6MrSJIq3wWvb70+lvy+m6LFfM2qkCJdQCvSYt6xrNyrSRjKEPiFFuYnXjngFxO97AN0PBnCMDJnq+/+SgpRMnGeg2RyNafrCUWbVYXqZDcnQ/zhgfTDKV12Tmzud+mO+GRJ4GEsMzUfPUPk26s09IdHCeRTNmHHgF6RK80CFFl9hpebr8lReQN4a/mtgKGvhmkTaWpYS4CsCgp6TaOyJqGoxya0nHC0Ze1rLqb4pT+0zmhTJw=
