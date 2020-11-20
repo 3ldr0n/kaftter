@@ -7,6 +7,7 @@ import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
 import io.mockk.verify
 import kaftter.api.domain.SummarizedTweetEntity
+import kaftter.api.domain.TweetEntity
 import kaftter.api.exception.UserNotFoundException
 import kaftter.api.repository.SummarizedTweetRepository
 import kaftter.api.repository.TweetRepository
@@ -31,11 +32,11 @@ class TweetServiceTest {
     @Test
     fun `test saving tweet on database should call repository once`() {
         val tweet = mockTweet()
-        every { tweetRepository.save(any()!!) } returns mockk()
+        every { tweetRepository.save(any<TweetEntity>()) } returns mockk()
 
         tweetService.save(tweet)
 
-        verify { tweetRepository.save(any()!!) }
+        verify { tweetRepository.save(any<TweetEntity>()) }
     }
 
     @Test

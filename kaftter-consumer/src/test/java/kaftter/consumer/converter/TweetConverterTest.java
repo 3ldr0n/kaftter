@@ -10,21 +10,22 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 class TweetConverterTest {
 
     @Test
-    public void test_conversion_with_null_tweet_should_throw_exception() {
+    void test_conversion_with_null_tweet_should_throw_exception() {
         assertThatExceptionOfType(NullPointerException.class).isThrownBy(() ->
                 TweetConverter.convert(null)
         );
     }
 
     @Test
-    public void test_conversion_with_null_user_should_throw_exception() {
+    void test_conversion_with_null_user_should_throw_exception() {
+        final var tweet = new Tweet(0L, "", null, 0, 0, 0, 0, "en");
         assertThatExceptionOfType(NullPointerException.class).isThrownBy(() ->
-                TweetConverter.convert(new Tweet(null, null, null, null, null, null, null, null))
+                TweetConverter.convert(tweet)
         );
     }
 
     @Test
-    public void test_conversion_with_all_fields_valid_should_convert_successfully() {
+    void test_conversion_with_all_fields_valid_should_convert_successfully() {
         final var tweetEvent = TweetFactory.mockTweetEvent();
         final var tweet = TweetConverter.convert(tweetEvent);
 

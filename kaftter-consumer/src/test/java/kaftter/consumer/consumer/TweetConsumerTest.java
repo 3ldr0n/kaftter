@@ -3,11 +3,11 @@ package kaftter.consumer.consumer;
 import kaftter.consumer.service.TweetService;
 import kaftter.tweet.Tweet;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.kafka.support.Acknowledgment;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -16,8 +16,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
-@RunWith(MockitoJUnitRunner.class)
-public class TweetConsumerTest {
+@ExtendWith(MockitoExtension.class)
+class TweetConsumerTest {
     @Mock
     private TweetService tweetService;
 
@@ -25,7 +25,7 @@ public class TweetConsumerTest {
     private TweetConsumer tweetConsumer;
 
     @Test
-    public void consumer_valid_message_should_save_to_database() {
+    void consumer_valid_message_should_save_to_database() {
         final var payload = new Tweet();
         final var consumerRecord = new ConsumerRecord<>("", 0, 0, 0L, payload);
         final var acknowledgment = mock(Acknowledgment.class);
@@ -38,7 +38,7 @@ public class TweetConsumerTest {
     }
 
     @Test
-    public void consume_null_consumer_record_should_acknowledge_message_and_not_save() {
+    void consume_null_consumer_record_should_acknowledge_message_and_not_save() {
         final var acknowledgment = mock(Acknowledgment.class);
 
         tweetConsumer.consume(null, acknowledgment);
@@ -48,7 +48,7 @@ public class TweetConsumerTest {
     }
 
     @Test
-    public void consume_null_message_on_consumer_record_should_acknowledge_message_and_not_save() {
+    void consume_null_message_on_consumer_record_should_acknowledge_message_and_not_save() {
         final var acknowledgment = mock(Acknowledgment.class);
         final var consumerRecord = new ConsumerRecord<Long, Tweet>("", 0, 0, 0L, null);
 

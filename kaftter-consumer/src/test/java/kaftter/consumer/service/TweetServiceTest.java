@@ -27,7 +27,7 @@ class TweetServiceTest {
     private TweetService tweetService;
 
     @Test
-    public void test_successful_tweet_registration_should_not_throw_exception() throws IOException {
+    void test_successful_tweet_registration_should_not_throw_exception() throws IOException {
         final var tweet = TweetFactory.mockTweetEvent();
         doNothing().when(kaftterApiClient).registerTweet(any());
 
@@ -37,7 +37,7 @@ class TweetServiceTest {
     }
 
     @Test
-    public void test_client_error_on_api_call_should_rethrow_exception() throws IOException {
+    void test_client_error_on_api_call_should_rethrow_exception() throws IOException {
         final var tweet = TweetFactory.mockTweetEvent();
         doThrow(ClientException.class).when(kaftterApiClient).registerTweet(any());
 
@@ -49,7 +49,7 @@ class TweetServiceTest {
     }
 
     @Test
-    public void test_server_error_on_api_call_should_rethrow_exception() throws IOException {
+    void test_server_error_on_api_call_should_rethrow_exception() throws IOException {
         final var tweet = TweetFactory.mockTweetEvent();
         doThrow(IOException.class).when(kaftterApiClient).registerTweet(any());
 
