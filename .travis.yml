@@ -2,7 +2,8 @@ addons:
   sonarcloud:
     organization: 3ldr0n
     token:
-      secure: "$SONAR_KEY"
+      secure: $SONAR_KEY
+
 matrix:
   include:
   - language: java
@@ -11,22 +12,22 @@ matrix:
     before_script:
     - cd kaftter-api
     script:
-    - "./gradlew clean"
-    - "./gradlew build -x test"
-    - "./gradlew test"
-    - "./gradlew jacocoTestReport --info"
-    - "./gradlew sonarqube -Dsonar.login=$SONAR_KEY --info --stacktrace"
+    - ./gradlew clean
+    - ./gradlew build -x test
+    - ./gradlew test
+    - ./gradlew jacocoTestReport
+    - ./gradlew sonarqube -Dsonar.login=$SONAR_KEY
   - language: java
     jdk:
     - openjdk11
     before_script:
     - cd kaftter-consumer
     script:
-    - "./gradlew clean"
-    - "./gradlew build -x test"
-    - "./gradlew test"
-    - "./gradlew jacocoTestReport --info"
-    - "./gradlew sonarqube -Dsonar.login=$SONAR_KEY --info --stacktrace"
+    - ./gradlew clean
+    - ./gradlew build -x test
+    - ./gradlew test
+    - ./gradlew jacocoTestReport
+    - ./gradlew sonarqube -Dsonar.login=$SONAR_KEY
   - language: scala
     jdk:
     - openjdk11
