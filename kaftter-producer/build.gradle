@@ -17,7 +17,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect",
             "org.jetbrains.kotlin:kotlin-stdlib-jdk8",
             "org.apache.kafka:kafka-clients:6.0.0-ce",
-            "org.slf4j:slf4j-api:1.7.2",
+            "org.slf4j:slf4j-api:1.7.30",
             "org.slf4j:slf4j-simple:1.7.30",
             "com.twitter:hbc-core:2.2.0",
             "commons-logging:commons-logging:1.2",
