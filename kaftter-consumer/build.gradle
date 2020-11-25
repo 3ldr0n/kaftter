@@ -35,7 +35,7 @@ dependencies {
             "org.apache.kafka:kafka-clients:2.3.0",
             "org.apache.commons:commons-csv:1.7",
             "org.apache.avro:avro:1.10.0",
-            "io.confluent:kafka-avro-serializer:5.4.1")
+            "io.confluent:kafka-avro-serializer:6.0.0")
     compileOnly("org.projectlombok:lombok:1.18.10")
     annotationProcessor("org.projectlombok:lombok:1.18.10")
     testCompileOnly("org.projectlombok:lombok:1.18.10")
