@@ -33,7 +33,6 @@ dependencies {
             "io.github.resilience4j:resilience4j-spring-boot2:1.4.0",
             "com.fasterxml.jackson.module:jackson-module-kotlin",
             "org.apache.kafka:kafka-clients:2.3.0",
-            "org.apache.commons:commons-csv:1.8",
             "org.apache.avro:avro:1.10.0",
             "io.confluent:kafka-avro-serializer:6.0.0")
     compileOnly("org.projectlombok:lombok:1.18.10")
