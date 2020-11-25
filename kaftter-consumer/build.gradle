@@ -40,7 +40,7 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:1.18.10")
     testCompileOnly("org.projectlombok:lombok:1.18.10")
     testAnnotationProcessor("org.projectlombok:lombok:1.18.10")
-    testImplementation("org.mockito:mockito-core:3.0.0",
+    testImplementation("org.mockito:mockito-core:3.6.28",
             "org.junit.jupiter:junit-jupiter-engine:5.3.2",
             "org.junit.jupiter:junit-jupiter-api:5.3.2",
             "org.assertj:assertj-core:3.11.1")
