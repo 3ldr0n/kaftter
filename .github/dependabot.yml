@@ -1,0 +1,23 @@
+# Please see the documentation for all configuration options:
+# https://help.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+
+version: 2
+updates:
+- package-ecosystem: gradle
+  directory: "kaftter-producer"
+  schedule:
+    interval: daily
+    time: "08:00"
+  open-pull-requests-limit: 10
+- package-ecosystem: gradle
+  directory: "kaftter-consumer"
+  schedule:
+    interval: daily
+    time: "08:00"
+  open-pull-requests-limit: 10
+- package-ecosystem: gradle
+  directory: "kaftter-api"
+  schedule:
+    interval: daily
+    time: "08:00"
+  open-pull-requests-limit: 10
