@@ -22,7 +22,7 @@ dependencies {
             "com.twitter:hbc-core:2.2.0",
             "commons-logging:commons-logging:1.2",
             "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.8",
-            "org.apache.avro:avro:1.9.2",
+            "org.apache.avro:avro:1.10.0",
             "io.confluent:kafka-avro-serializer:5.4.1")
 }
 
