@@ -32,11 +32,11 @@ class TweetServiceTest {
     @Test
     fun `test saving tweet on database should call repository once`() {
         val tweet = mockTweet()
-        every { tweetRepository.save(any<TweetEntity>()) } returns mockk()
+        every { tweetRepository.save(any()) } returns mockk()
 
         tweetService.save(tweet)
 
-        verify { tweetRepository.save(any<TweetEntity>()) }
+        verify { tweetRepository.save(any()) }
     }
 
     @Test

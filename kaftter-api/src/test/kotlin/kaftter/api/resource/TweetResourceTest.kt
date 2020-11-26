@@ -46,7 +46,7 @@ class TweetResourceTest {
         val result = mockMvc.get("/tweets/$userId") {
             contentType = MediaType.APPLICATION_JSON
         }.andExpect {
-            status { isOk }
+            status { isOk() }
             content { contentType(MediaType.APPLICATION_JSON) }
         }.andReturn()
 
@@ -63,7 +63,7 @@ class TweetResourceTest {
         val result = mockMvc.get("/tweets/$userId") {
             contentType = MediaType.APPLICATION_JSON
         }.andExpect {
-            status { isNotFound }
+            status { isNotFound() }
         }.andReturn()
 
         assertThat(result.response.errorMessage).isNull()
@@ -79,7 +79,7 @@ class TweetResourceTest {
             contentType = MediaType.APPLICATION_JSON
             content = jacksonObjectMapper().writeValueAsString(tweet)
         }.andExpect {
-            status { isOk }
+            status { isOk() }
         }.andReturn()
 
         assertThat(result.response.errorMessage).isNull()
@@ -95,7 +95,7 @@ class TweetResourceTest {
             contentType = MediaType.APPLICATION_JSON
             content = jacksonObjectMapper().writeValueAsString(tweet)
         }.andExpect {
-            status { isInternalServerError }
+            status { isInternalServerError() }
         }.andReturn()
 
         assertThat(result.response.errorMessage).isNull()
