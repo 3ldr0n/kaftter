@@ -32,7 +32,7 @@ dependencies {
             "com.squareup.okhttp3:okhttp:4.8.1",
             "io.github.resilience4j:resilience4j-spring-boot2:1.6.1",
             "com.fasterxml.jackson.module:jackson-module-kotlin",
-            "org.apache.kafka:kafka-clients:2.3.0",
+            "org.apache.kafka:kafka-clients:2.6.0",
             "org.apache.avro:avro:1.10.0",
             "io.confluent:kafka-avro-serializer:6.0.0")
     compileOnly("org.projectlombok:lombok:1.18.16")
@@ -40,8 +40,8 @@ dependencies {
     testCompileOnly("org.projectlombok:lombok:1.18.10")
     testAnnotationProcessor("org.projectlombok:lombok:1.18.10")
     testImplementation("org.mockito:mockito-core:3.6.28",
-            "org.junit.jupiter:junit-jupiter-engine:5.3.2",
-            "org.junit.jupiter:junit-jupiter-api:5.3.2",
+            "org.junit.jupiter:junit-jupiter-engine:5.7.0",
+            "org.junit.jupiter:junit-jupiter-api:5.7.0",
             "org.assertj:assertj-core:3.11.1")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
