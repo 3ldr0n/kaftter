@@ -29,7 +29,7 @@ dependencies {
             "org.springframework.boot:spring-boot-starter-actuator",
             "org.springframework.boot:spring-boot-starter-aop",
             "org.springframework.kafka:spring-kafka",
-            "com.squareup.okhttp3:okhttp:4.8.1",
+            "com.squareup.okhttp3:okhttp:4.9.0",
             "io.github.resilience4j:resilience4j-spring-boot2:1.6.1",
             "com.fasterxml.jackson.module:jackson-module-kotlin",
             "org.apache.kafka:kafka-clients:6.0.0-ce",
