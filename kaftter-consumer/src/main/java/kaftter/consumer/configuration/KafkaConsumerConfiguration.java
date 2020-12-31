@@ -44,7 +44,7 @@ public class KafkaConsumerConfiguration {
 
     @Bean(TWEET_CONSUMER_CONTAINER_FACTORY)
     public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, Object>> tweetConsumerContainerFactory() {
-        final ConcurrentKafkaListenerContainerFactory<String, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        final var factory = new ConcurrentKafkaListenerContainerFactory<String, Object>();
         final var consumerProperties = getConsumerProperties();
         factory.setConsumerFactory(new DefaultKafkaConsumerFactory<>(consumerProperties));
         factory.setConcurrency(concurrency);
@@ -56,7 +56,7 @@ public class KafkaConsumerConfiguration {
         final var properties = new HashMap<String, Object>();
         properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         properties.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
-        properties.put(AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, schemaRegistryUrl);
+        properties.put(KafkaAvroDeserializerConfig.SCHEMA_REGISTRY_URL_CONFIG, schemaRegistryUrl);
         properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, LongDeserializer.class.getName());
         properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, KafkaAvroDeserializer.class.getName());
         properties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, offsetReset);
