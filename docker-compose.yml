@@ -8,7 +8,7 @@ services:
     hostname: zookeeper
     domainname: zookeeper.local.kaftter
     ports:
-      - "2181:2181"
+      - 2181:2181
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
@@ -25,7 +25,7 @@ services:
     depends_on:
       - zookeeper
     ports:
-      - "29092:29092"
+      - 29092:29092
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
@@ -49,7 +49,7 @@ services:
     depends_on:
       - zookeeper
     ports:
-      - "8081:8081"
+      - 8081:8081
     environment:
       SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: "zookeeper:2181"
       SCHEMA_REGISTRY_HOST_NAME: schemaregistry
@@ -78,6 +78,38 @@ services:
       kaftternet:
         aliases:
           - cassandra.local.kaftter
+
+  kaftter-api:
+    domainname: kaftter-api.local.kaftter
+    container_name: kaftter_api
+    build: kaftter-api/
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - cassandra
+    ports:
+      - 8888:8888
+    networks:
+      kaftternet:
+        aliases:
+          - kaftter-api.local.kaftter
+
+  kaftter-consumer:
+    domainname: kaftter-consumer.local.kaftter
+    container_name: kaftter_consumer
+    build: kaftter-consumer/
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - kafka
+      - schemaregistry
+      - kaftter-api
+    ports:
+      - 8079:8079
+    networks:
+      kaftternet:
+        aliases:
+          - kaftter-consumer.local.kaftter
 
 networks:
   kaftternet:
