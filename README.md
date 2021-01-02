@@ -17,37 +17,28 @@ learn some technologies.
 
 ## Local environment
 
-```bash
-docker-compose up -d
-```
+To run all "dependencies" for the services (zookeeper, kafka, schema
+registry and cassandra).
 
 ```bash
-./register_schema.py http://localhost:8081 stream.tweets kaftter/src/main/avro/Tweet.avsc
+docker-compose -f docker-compose-dependencies.ymL up -d
+./deploy/local/scriprts/schemaregistry/register_schema.py
 ```
 
-### Kaftter producer
+### Running all services with docker compose (WIP)
+
+Communication between the containers isn't working yet.
 
 ```bash
 cd kaftter-producer
 ./gradlew clean build
-docker build -t kaftter/kaftter-producer:1.0 .
-docker run -d --name kaftter_producer kaftter/kaftter-producer:1.0
-```
 
-### Kaftter
-
-```bash
-cd kaftter
+cd kaftter-consumer
 ./gradlew clean build
-docker build -t kaftter/kaftter:1.0 .
-docker run -d --name kaftter kaftter/kaftter:1.0
-```
 
-### Kaftter API
-
-```bash
 cd kaftter-api
 ./gradlew clean build
-docker build -t kaftter/kaftter-api:1.0 .
-docker run -d --name kaftter-api kaftter/kaftter-api:1.0
+
+docker-compose up -d
+./deploy/local/scriprts/schemaregistry/register_schema.py
 ```

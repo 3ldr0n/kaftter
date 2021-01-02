@@ -1,13 +1,12 @@
 #!/usr/bin/python3
 
 import os
-import sys
 
 import requests
 
-schema_registry_url = sys.argv[1]
-topic = sys.argv[2]
-schema_file = sys.argv[3]
+schema_registry_url = "http://localhost:8081"
+topic = "stream.tweets"
+schema_file = "kaftter-consumer/src/main/avro/Tweet.avsc"
 
 aboslute_path_to_schema = os.path.join(os.getcwd(), schema_file)
 
