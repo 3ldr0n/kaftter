@@ -6,16 +6,22 @@ services:
     container_name: kaftter_zookeeper
     restart: always
     hostname: zookeeper
+    domainname: zookeeper.local.kaftter
     ports:
       - "2181:2181"
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      kaftternet:
+        aliases:
+          - zookeeper.local.kaftter
 
   kafka:
     image: confluentinc/cp-kafka:5.5.0
     container_name: kaftter_kafka
     hostname: kafka
+    domainname: kafka.local.kaftter
     depends_on:
       - zookeeper
     ports:
@@ -29,11 +35,16 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_DELETE_TOPIC_ENABLE: "true"
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+    networks:
+      kaftternet:
+        aliases:
+          - kafka.local.kaftter
 
   schemaregistry:
     image: confluentinc/cp-schema-registry:5.1.2
     container_name: kaftter_schemaregistry
     hostname: schemaregistry
+    domainname: schemaregistry.local.kaftter
     restart: always
     depends_on:
       - zookeeper
@@ -43,11 +54,16 @@ services:
       SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: "zookeeper:2181"
       SCHEMA_REGISTRY_HOST_NAME: schemaregistry
       SCHEMA_REGISTRY_LISTENERS: "http://0.0.0.0:8081"
+    networks:
+      kaftternet:
+        aliases:
+          - schemaregistry.local.kaftter
 
   cassandra:
     image: cassandra:3.11.5
     container_name: kaftter_cassandra
     hostname: cassandra
+    domainname: cassandra.local.kaftter
     ports:
       - "9042:9042"
     environment:
@@ -58,4 +74,10 @@ services:
     volumes:
       - "./deploy/local/scripts/cassandra/create-keyspace.sh:/create-keyspace.sh"
     command: "sh /create-keyspace.sh"
+    networks:
+      kaftternet:
+        aliases:
+          - cassandra.local.kaftter
 
+networks:
+  kaftternet:
