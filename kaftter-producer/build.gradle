@@ -37,6 +37,5 @@ compileTestKotlin {
 avro {
     fieldVisibility = "PRIVATE"
     outputCharacterEncoding = "UTF-8"
-    validateDefaults = true
     createSetters = false
 }

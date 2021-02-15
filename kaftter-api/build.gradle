@@ -54,13 +54,3 @@ jacocoTestReport {
         xml.enabled true
     }
 }
-
-sonarqube {
-    properties {
-        property "sonar.projectName", "kaftter-api"
-        property "sonar.projectKey", "3ldr0n_kaftter-api"
-        property "sonar.host.url", "https://sonarcloud.io"
-        property "sonar.organization", "3ldr0n"
-        property "sonar.exclusions", "**/KaftterApiApplication.kt"
-    }
-}

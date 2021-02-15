@@ -48,7 +48,6 @@ dependencies {
 avro {
     fieldVisibility = "PRIVATE"
     outputCharacterEncoding = "UTF-8"
-    validateDefaults = true
     createSetters = false
 }
 
@@ -59,15 +58,5 @@ test {
 jacocoTestReport {
     reports {
         xml.enabled true
-    }
-}
-
-sonarqube {
-    properties {
-        property "sonar.projectName", "kaftter-consumer"
-        property "sonar.projectKey", "3ldr0n_kaftter-consumer"
-        property "sonar.host.url", "https://sonarcloud.io"
-        property "sonar.organization", "3ldr0n"
-        property "sonar.exclusions", "**/*Configuration.java, **/KaftterConsumerApplication.java"
     }
 }
