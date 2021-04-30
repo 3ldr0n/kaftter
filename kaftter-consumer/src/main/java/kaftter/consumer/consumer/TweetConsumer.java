@@ -9,7 +9,6 @@ import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Service;
 
 import static java.util.Objects.isNull;
-import static kaftter.consumer.configuration.KafkaConsumerConfiguration.TWEET_CONSUMER_CONTAINER_FACTORY;
 
 @Slf4j
 @Service
@@ -25,10 +24,7 @@ public class TweetConsumer {
      *
      * @param message Message to be processed.
      */
-    @KafkaListener(
-            topics = "${kafka.topic}",
-            groupId = "${spring.kafka.consumer.group-id}",
-            containerFactory = TWEET_CONSUMER_CONTAINER_FACTORY)
+    @KafkaListener(topics = "${kafka.topic}")
     public void consume(final ConsumerRecord<Long, Tweet> message, final Acknowledgment acknowledgment) {
         if (isNull(message) || isNull(message.value())) {
             log.warn("m=consume, status=null-message");

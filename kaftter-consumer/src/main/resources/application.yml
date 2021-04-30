@@ -11,12 +11,21 @@ kaftter-api:
 spring:
   kafka:
     bootstrap-servers: localhost:29092
-    schema-registry: http://localhost:8081
+    properties:
+      schema.registry.url: http://localhost:8081
+      specific.avro.reader: true
+      session.timeout.ms: 15000
+    listener:
+      ack-mode: MANUAL
+      concurrency: 4
     consumer:
       group-id: tweets-consumer
+      client-id: kaftter-consumer
       auto-offset-reset: earliest
-      concurrency: 4
-      session-timeout: 15000
+      enable-auto-commit: false
+      isolation-level: READ_COMMITTED
+      key-deserializer: org.apache.kafka.common.serialization.LongDeserializer
+      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
 
 management:
   health:
@@ -37,7 +46,6 @@ resilience4j.circuitbreaker:
         - java.io.IOException
       ignoreExceptions:
         - kaftter.consumer.exception.ClientException
-
 
 resilience4j.retry:
   instances:

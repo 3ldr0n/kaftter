@@ -1,7 +1,8 @@
 kaftter-api:
-  url: http://kaftter-api.local.kaftter/tweets
+  url: http://kaftter-api:8888/tweets
 
 spring:
   kafka:
-    bootstrap-servers: kafka.local.kaftter:29092
-    schema-registry: http://schemaregistry.local.kaftter:8081
+    bootstrap-servers: kafka:29092
+    properties:
+      schema.registry.url: http://schemaregistry:8081
