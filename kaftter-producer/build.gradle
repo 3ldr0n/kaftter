@@ -23,7 +23,7 @@ dependencies {
             "commons-logging:commons-logging:1.2",
             "com.fasterxml.jackson.module:jackson-module-kotlin:2.12.3",
             "org.apache.avro:avro:1.10.2",
-            "io.confluent:kafka-avro-serializer:6.1.1")
+            "io.confluent:kafka-avro-serializer:6.2.0")
 }
 
 compileKotlin {
