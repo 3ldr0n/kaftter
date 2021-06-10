@@ -33,7 +33,7 @@ dependencies {
             "com.fasterxml.jackson.module:jackson-module-kotlin",
             "org.apache.kafka:kafka-clients:6.1.1-ce",
             "org.apache.avro:avro:1.10.2",
-            "io.confluent:kafka-avro-serializer:6.1.1")
+            "io.confluent:kafka-avro-serializer:6.2.0")
     compileOnly("org.projectlombok:lombok:1.18.20")
     annotationProcessor("org.projectlombok:lombok:1.18.18")
     testCompileOnly("org.projectlombok:lombok:1.18.20")
